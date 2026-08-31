@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link rel="icon" href="uploads/pasted-1788193920530-0.png">
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#141414}a:hover{color:#000}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:#D8D8D2;border-radius:8px}
+</style>
+</helmet>
+
+<template id="__bundler_thumbnail">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="#141414"/><text x="100" y="120" font-family="Arial,sans-serif" font-size="90" font-weight="700" fill="#EAF76A" text-anchor="middle">F</text></svg>
+</template>
+
+<div style="height:100vh;width:100%;background:#A9B6A8;padding:16px;box-sizing:border-box;display:flex;gap:0">
+
+  <div style="width:76px;flex:none;background:#0C0C0C;border-radius:24px 0 0 24px;display:flex;flex-direction:column;align-items:center;padding:16px 0;box-sizing:border-box">
+    <div onClick="{{ goHome }}" style="width:44px;height:44px;flex:none;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-bottom:28px;overflow:hidden">
+      <img src="uploads/pasted-1788193920530-0.png" alt="Fluxaro logo" style="width:100%;height:100%;object-fit:cover;transform:scale(1.18)">
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;flex:1">
+      <sc-for list="{{ sidebarItems }}" as="item" hint-placeholder-count="8">
+        <div onClick="{{ item.onClick }}" title="{{ item.label }}" style="width:44px;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:{{ item.bg }}">
+          <div dangerouslySetInnerHTML="{{ item.iconHtml }}"></div>
+        </div>
+      </sc-for>
+    </div>
+    <image-slot id="cc-avatar" shape="circle" src="uploads/pasted-1788194008689-0.png" placeholder="Photo" style="width:36px;height:36px;flex:none;margin-top:12px"></image-slot>
+  </div>
+
+  <div style="flex:1;background:#F4F3EF;border-radius:0 24px 24px 0;overflow-y:auto;box-sizing:border-box;padding:28px 32px">
+
+    <sc-if value="{{ isCommandCenter }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px">
+        <div style="font-size:38px;line-height:1.16;font-weight:700;color:#141414">
+          <div>Running
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:999px;background:#fff;border:1.5px solid #141414;vertical-align:middle;margin:0 6px">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+            </span>
+            Your Clients</div>
+          <div>and
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:999px;background:#EAF76A;vertical-align:middle;margin:0 6px">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="#141414"><path d="M12 2l1.8 5.2L19 9l-5.2 1.8L12 16l-1.8-5.2L5 9l5.2-1.8z"></path></svg>
+            </span>
+            Proposals</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;flex:none;margin-top:6px">
+          <div onClick="{{ toggleAgentPanel }}" style="width:42px;height:42px;border-radius:999px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);display:flex;align-items:center;justify-content:center;cursor:pointer">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          </div>
+          <button onClick="{{ goCrmFromDeals }}" style="background:#141414;color:#fff;border:none;border-radius:999px;padding:13px 20px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;flex:none" style-hover="background:#2a2a2a">+ New Deal</button>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:22px;flex-wrap:wrap">
+        <sc-for list="{{ tabs }}" as="tab" hint-placeholder-count="5">
+          <div onClick="{{ tab.onClick }}" style="padding:10px 18px;border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;background:{{ tab.bg }};color:{{ tab.color }};box-shadow:{{ tab.shadow }}">{{ tab.label }}</div>
+        </sc-for>
+      </div>
+
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;margin-top:16px;align-items:start">
+
+        <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+          <div style="display:flex;gap:16px;min-width:0">
+            <sc-for list="{{ statCards }}" as="card" hint-placeholder-count="2">
+              <div style="flex:1;min-width:0;background:{{ card.bg }};border-radius:20px;padding:18px;box-sizing:border-box">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <div style="width:28px;height:28px;flex:none;border-radius:999px;background:{{ card.iconBg }};display:flex;align-items:center;justify-content:center" dangerouslySetInnerHTML="{{ card.iconHtml }}"></div>
+                    <div style="font-size:13px;font-weight:600;color:#141414;white-space:nowrap">{{ card.label }}</div>
+                  </div>
+                  <div style="color:rgba(20,20,20,0.4);font-weight:700;letter-spacing:1px;font-size:13px">•••</div>
+                </div>
+                <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-top:16px">
+                  <div style="font-size:28px;font-weight:700;color:#141414;white-space:nowrap;flex:none">{{ card.value }}</div>
+                  <div style="background:rgba(20,20,20,0.08);border-radius:999px;padding:4px 8px;font-size:11px;font-weight:600;color:#141414;display:flex;align-items:center;gap:4px;white-space:nowrap;flex:none">{{ card.pct }}<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="3"><circle cx="12" cy="12" r="9"></circle></svg></div>
+                </div>
+                <div style="font-size:11px;color:rgba(20,20,20,0.55);margin-top:2px">{{ card.sub }}</div>
+                <div style="display:flex;gap:3px;margin-top:14px">
+                  <sc-for list="{{ card.capsules }}" as="c" hint-placeholder-count="8">
+                    <div style="flex:1;height:30px;border-radius:999px;background:{{ c.bg }};border:{{ c.border }}"></div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="background:#141414;border-radius:20px;padding:24px;box-sizing:border-box;position:relative;overflow:hidden;display:flex;align-items:center;gap:20px;min-height:150px">
+            <div style="position:absolute;inset:0">
+              <image-slot id="cc-promo" shape="rect" src="uploads/pasted-1787909679811-0.png" placeholder="Agent / product photo"></image-slot>
+            </div>
+            <div style="position:relative;flex:1;min-width:0">
+              <div style="font-size:18px;font-weight:700;color:#fff;line-height:1.3;white-space:nowrap">Put Your Agents to Work <span style="font-size:15px">↗</span></div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.65);margin-top:10px;line-height:1.5">Deploy AI agents, automate workflows,<br>and get real work done.</div>
+            </div>
+            <button onClick="{{ toggleAgentPanel }}" style="position:relative;flex:none;background:#fff;color:#141414;border:none;border-radius:999px;padding:12px 20px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap" style-hover="background:#EAF76A">Open Agents <span>▷</span></button>
+          </div>
+
+          <div style="background:#fff;border-radius:20px;padding:20px;box-sizing:border-box">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div style="display:flex;align-items:center;gap:10px">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                <div style="font-size:16px;font-weight:700;color:#141414">Statistics</div>
+                <div style="display:flex;align-items:center;gap:5px;margin-left:10px"><span style="width:7px;height:7px;border-radius:50%;background:#141414;display:inline-block"></span><span style="font-size:12px;color:rgba(20,20,20,0.6)">Deals</span></div>
+                <div style="display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:50%;background:#EAF76A;display:inline-block"></span><span style="font-size:12px;color:rgba(20,20,20,0.6)">Revenue</span></div>
+              </div>
+              <div style="background:#F4F3EF;border-radius:999px;padding:7px 14px;font-size:12px;font-weight:500;color:#141414">2026 ⌄</div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:26px;padding:0 4px">
+              <sc-for list="{{ chartData }}" as="d" hint-placeholder-count="8">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+                  <sc-if value="{{ d.badge }}" hint-placeholder-val="{{ null }}">
+                    <div style="background:#141414;color:#fff;border-radius:999px;padding:3px 9px;font-size:11px;font-weight:600">{{ d.badge }}</div>
+                  </sc-if>
+                  <sc-if value="{{ d.noBadge }}" hint-placeholder-val="{{ true }}">
+                    <div style="height:21px"></div>
+                  </sc-if>
+                  <div style="display:flex;gap:5px;align-items:flex-end;height:130px">
+                    <div style="position:relative;width:11px;height:130px;border-radius:999px;background:#EDEDE6">
+                      <div style="position:absolute;bottom:0;left:0;width:100%;border-radius:999px;background:#141414;height:{{ d.dealsH }}"></div>
+                      <div style="position:absolute;left:50%;transform:translateX(-50%);bottom:{{ d.dealsH }};width:11px;height:11px;border-radius:50%;background:#fff;border:2px solid #141414;margin-bottom:-6px"></div>
+                    </div>
+                    <div style="position:relative;width:11px;height:130px;border-radius:999px;background:#EDEDE6">
+                      <div style="position:absolute;bottom:0;left:0;width:100%;border-radius:999px;background:#EAF76A;height:{{ d.revH }}"></div>
+                      <div style="position:absolute;left:50%;transform:translateX(-50%);bottom:{{ d.revH }};width:11px;height:11px;border-radius:50%;background:#fff;border:2px solid #141414;margin-bottom:-6px"></div>
+                    </div>
+                  </div>
+                  <div style="font-size:11px;color:rgba(20,20,20,0.55)">{{ d.label }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;gap:12px;min-width:0">
+            <sc-for list="{{ squareLinks }}" as="s" hint-placeholder-count="2">
+              <div onClick="{{ s.onClick }}" style="flex:1;aspect-ratio:1;background:#fff;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-sizing:border-box" style-hover="background:#EFEFE9">
+                <div dangerouslySetInnerHTML="{{ s.iconHtml }}"></div>
+                <div style="font-size:12px;font-weight:600;color:#141414">{{ s.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <sc-for list="{{ rightLinks }}" as="l" hint-placeholder-count="4">
+            <div onClick="{{ l.onClick }}" style="background:#fff;border-radius:16px;padding:14px 16px;cursor:pointer;box-sizing:border-box" style-hover="background:#FCFCFA">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+                <div style="width:28px;height:28px;border-radius:999px;background:#F4F3EF;display:flex;align-items:center;justify-content:center;flex:none" dangerouslySetInnerHTML="{{ l.iconHtml }}"></div>
+                <div style="color:rgba(20,20,20,0.35)">↗</div>
+              </div>
+              <div style="font-size:13px;font-weight:700;color:#141414;margin-top:10px">{{ l.title }}</div>
+              <div style="font-size:11px;color:rgba(20,20,20,0.5);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ l.sub }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isCrm }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px">
+        <div><div style="font-size:30px;font-weight:700;color:#141414">Clients</div><div style="font-size:14px;color:rgba(20,20,20,0.55);margin-top:6px">Every account and lead in one place</div></div>
+        <div style="display:flex;align-items:center;gap:10px;flex:none">
+          <div style="display:flex;align-items:center;gap:8px;background:#fff;border-radius:999px;padding:10px 16px;box-sizing:border-box">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(20,20,20,0.4)" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span style="font-size:13px;color:rgba(20,20,20,0.4)">Search</span>
+          </div>
+          <div style="width:42px;height:42px;border-radius:999px;background:#fff;display:flex;align-items:center;justify-content:center;flex:none">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          </div>
+          <button style="background:#141414;color:#fff;border:none;border-radius:999px;padding:13px 20px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;flex:none" style-hover="background:#2a2a2a">+ New Client</button>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:16px;margin-top:22px;align-items:stretch">
+        <div style="flex:1;min-width:0;background:#fff;border-radius:20px;padding:18px;box-sizing:border-box">
+          <div style="font-size:13px;font-weight:600;color:#141414">New Clients</div>
+          <div style="display:flex;align-items:baseline;gap:6px;margin-top:14px;flex-wrap:wrap"><div style="font-size:28px;font-weight:700;color:#141414">12</div><div style="font-size:12px;color:rgba(20,20,20,0.5);white-space:nowrap">/ 6-month average</div></div>
+          <div style="display:flex;align-items:flex-end;gap:8px;height:80px;margin-top:16px">
+            <sc-for list="{{ clientBarChart }}" as="b" hint-placeholder-count="6">
+              <div style="flex:1;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;min-width:0">
+                <div style="width:100%;border-radius:8px 8px 3px 3px;background:{{ b.bg }};height:{{ b.h }}"></div>
+                <div style="font-size:10px;color:rgba(20,20,20,0.5)">{{ b.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="flex:1;min-width:0;background:#fff;border-radius:20px;padding:18px;box-sizing:border-box">
+          <div style="font-size:13px;font-weight:600;color:#141414">Win Rate</div>
+          <div style="display:flex;align-items:baseline;gap:6px;margin-top:14px;flex-wrap:wrap"><div style="font-size:28px;font-weight:700;color:#141414">42%</div><div style="font-size:12px;color:rgba(20,20,20,0.5);white-space:nowrap">/ last 90 days</div></div>
+          <div style="display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-top:16px">
+            <sc-for list="{{ winRateDots }}" as="d" hint-placeholder-count="32">
+              <div style="width:100%;aspect-ratio:1;border-radius:50%;background:{{ d.bg }}"></div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:16px;flex:none;width:200px">
+          <div style="background:#141414;border-radius:20px;padding:18px;box-sizing:border-box;flex:1;display:flex;flex-direction:column;justify-content:space-between;min-height:60px">
+            <div style="font-size:13px;color:rgba(255,255,255,0.6);font-weight:500">Active Clients</div>
+            <div style="font-size:26px;font-weight:700;color:#fff">12</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.5)">3 onboarded this quarter</div>
+          </div>
+          <div style="background:#EAF76A;border-radius:20px;padding:18px;box-sizing:border-box;flex:1;display:flex;flex-direction:column;justify-content:space-between;min-height:60px">
+            <div style="font-size:13px;color:rgba(20,20,20,0.6);font-weight:500">New Leads</div>
+            <div style="font-size:26px;font-weight:700;color:#141414">5</div>
+            <div style="font-size:11px;color:rgba(20,20,20,0.55)">2 added this week</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:240px repeat(3,minmax(0,1fr));gap:16px;margin-top:16px;align-items:start">
+        <div style="background:#141414;border-radius:20px;padding:22px;box-sizing:border-box;min-height:230px;display:flex;flex-direction:column;justify-content:space-between">
+          <div>
+            <div style="font-size:17px;font-weight:700;color:#fff;line-height:1.35">A new lead just came in.</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:10px;line-height:1.5">Review it before it goes cold.</div>
+          </div>
+          <button onClick="{{ goCrmFromDeals }}" style="background:#EAF76A;color:#141414;border:none;border-radius:999px;padding:11px 16px;font-size:13px;font-weight:600;cursor:pointer;align-self:flex-start;display:inline-flex;align-items:center;gap:6px" style-hover="background:#fff">Open lead <span>↗</span></button>
+        </div>
+
+        <sc-for list="{{ clientKanban }}" as="col" hint-placeholder-count="3">
+          <div style="display:flex;flex-direction:column;gap:12px;min-width:0">
+            <div style="display:flex;align-items:baseline;gap:6px">
+              <div style="font-size:15px;font-weight:700;color:#141414">{{ col.title }}</div>
+              <div style="font-size:12px;color:rgba(20,20,20,0.45)">/{{ col.count }}</div>
+            </div>
+            <sc-for list="{{ col.cards }}" as="card" hint-placeholder-count="2">
+              <div style="background:{{ card.bg }};border-radius:18px;padding:16px;box-sizing:border-box">
+                <div style="display:inline-flex;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:600;background:{{ card.tagBg }};color:{{ card.tagColor }}">{{ card.tag }}</div>
+                <div style="font-size:14px;font-weight:700;color:{{ card.textColor }};margin-top:12px">{{ card.company }}</div>
+                <div style="font-size:12px;color:{{ card.subColor }};margin-top:4px;line-height:1.4">{{ card.desc }}</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid {{ card.divider }}">
+                  <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:{{ card.metaColor }}">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="{{ card.metaColor }}" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    {{ card.date }}
+                  </div>
+                  <div style="font-size:11px;font-weight:600;color:{{ card.textColor }}">{{ card.value }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isProposals }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px">
+        <div><div style="font-size:30px;font-weight:700;color:#141414">Proposals</div><div style="font-size:14px;color:rgba(20,20,20,0.55);margin-top:6px">Track everything sent, signed, or stalled</div></div>
+        <button style="background:#141414;color:#fff;border:none;border-radius:999px;padding:13px 20px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;flex:none" style-hover="background:#2a2a2a">+ New Proposal</button>
+      </div>
+
+      <div style="display:flex;gap:16px;margin-top:22px;align-items:stretch">
+        <div style="flex:2;min-width:0;background:#fff;border-radius:20px;padding:20px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:34px;height:34px;border-radius:999px;background:#EAF76A;display:flex;align-items:center;justify-content:center;flex:none">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2"><circle cx="12" cy="8" r="6"></circle><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"></path></svg>
+              </div>
+              <div style="font-size:14px;font-weight:600;color:#141414">Quarterly Target</div>
+            </div>
+            <div style="font-size:18px;font-weight:700;color:#141414;white-space:nowrap">$110,300 <span style="font-size:13px;font-weight:500;color:rgba(20,20,20,0.45)">/ $150,000</span></div>
+          </div>
+          <div style="height:10px;border-radius:999px;background:#F4F3EF;margin-top:16px;overflow:hidden"><div style="height:100%;width:74%;border-radius:999px;background:#EAF76A"></div></div>
+        </div>
+        <div style="flex:1;min-width:0;background:#141414;border-radius:20px;padding:18px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between">
+          <div style="font-size:13px;color:rgba(255,255,255,0.6);font-weight:500">Proposals Out</div>
+          <div style="font-size:26px;font-weight:700;color:#fff">2</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.5)">1 awaiting response</div>
+        </div>
+        <div style="flex:1;min-width:0;background:#fff;border-radius:20px;padding:18px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between">
+          <div style="font-size:13px;color:rgba(20,20,20,0.6);font-weight:500">Win Rate</div>
+          <div style="font-size:26px;font-weight:700;color:#141414">58%</div>
+          <div style="font-size:11px;color:rgba(20,20,20,0.5)">Last 6 months</div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:14px;margin-top:16px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:8px;background:#fff;border-radius:999px;padding:9px 16px;box-sizing:border-box">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          <span style="font-size:13px;font-weight:600;color:#141414">This Quarter</span>
+          <span style="color:rgba(20,20,20,0.4);font-size:11px">⌄</span>
+        </div>
+        <div style="font-size:12px;color:rgba(20,20,20,0.5)">compared to Jun 1 – Aug 31, 2026</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:16px">
+        <sc-for list="{{ proposalMetrics }}" as="m" hint-placeholder-count="6">
+          <div style="background:#fff;border-radius:20px;padding:20px;box-sizing:border-box">
+            <div style="font-size:13px;font-weight:600;color:#141414;text-decoration:underline;text-decoration-color:rgba(20,20,20,0.25);text-underline-offset:4px">{{ m.title }}</div>
+            <div style="display:flex;align-items:baseline;gap:8px;margin-top:14px">
+              <div style="font-size:26px;font-weight:700;color:#141414">{{ m.value }}</div>
+              <div style="font-size:12px;font-weight:700;color:{{ m.deltaColor }}">{{ m.deltaArrow }} {{ m.delta }}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:9px;margin-top:16px">
+              <sc-for list="{{ m.breakdown }}" as="b" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;padding-top:9px;border-top:1px dashed #EDEDE6">
+                  <span style="color:rgba(20,20,20,0.55)">{{ b.label }}</span>
+                  <span style="display:flex;align-items:center;gap:6px;flex:none">
+                    <span style="font-weight:600;color:#141414;white-space:nowrap">{{ b.value }}</span>
+                    <span style="font-weight:700;color:{{ b.deltaColor }};font-size:11px;white-space:nowrap;flex:none">{{ b.deltaArrow }} {{ b.delta }}</span>
+                  </span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isCashflow }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px">
+        <div><div style="font-size:30px;font-weight:700;color:#141414">Cashflow</div><div style="font-size:14px;color:rgba(20,20,20,0.55);margin-top:6px">Revenue and expenses across active projects</div></div>
+        <button style="background:#141414;color:#fff;border:none;border-radius:999px;padding:13px 20px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;flex:none" style-hover="background:#2a2a2a">+ Add Invoice</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;margin-top:22px;align-items:start">
+
+        <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+          <div style="display:flex;gap:16px">
+            <div style="flex:1;min-width:0;background:#141414;border-radius:20px;padding:20px;box-sizing:border-box;min-height:130px;display:flex;flex-direction:column;justify-content:space-between">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start"><div style="font-size:13px;color:rgba(255,255,255,0.6);font-weight:500">Total Revenue</div><div style="color:rgba(255,255,255,0.35);font-weight:700">•••</div></div>
+              <div style="font-size:28px;font-weight:700;color:#fff">$142,300</div>
+              <div style="font-size:12px;color:rgba(255,255,255,0.55)">3 active projects</div>
+            </div>
+            <div style="flex:1;min-width:0;background:#EAF76A;border-radius:20px;padding:20px;box-sizing:border-box;min-height:130px;display:flex;flex-direction:column;justify-content:space-between">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start"><div style="font-size:13px;color:rgba(20,20,20,0.6);font-weight:500">Outstanding</div><div style="color:rgba(20,20,20,0.35);font-weight:700">•••</div></div>
+              <div style="font-size:28px;font-weight:700;color:#141414">$34,200</div>
+              <div style="font-size:12px;color:rgba(20,20,20,0.55)">2 invoices pending</div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <sc-for list="{{ cashflowActions }}" as="act" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:10px;background:{{ act.bg }};color:{{ act.color }};border-radius:999px;padding:8px 16px 8px 8px;cursor:pointer">
+                <div style="width:30px;height:30px;border-radius:999px;background:{{ act.iconBg }};display:flex;align-items:center;justify-content:center" dangerouslySetInnerHTML="{{ act.iconHtml }}"></div>
+                <div style="font-size:13px;font-weight:600;white-space:nowrap">{{ act.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="background:#fff;border-radius:20px;padding:20px;box-sizing:border-box">
+            <div style="font-size:16px;font-weight:700;color:#141414;margin-bottom:14px">Recent Payments</div>
+            <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;font-size:11px;font-weight:600;color:rgba(20,20,20,0.4);text-transform:uppercase;letter-spacing:0.03em;padding:0 4px 10px">
+              <div>Client</div><div>Date</div><div>Status</div><div style="text-align:right">Amount</div>
+            </div>
+            <sc-for list="{{ recentPayments }}" as="row" hint-placeholder-count="4">
+              <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;align-items:center;padding:12px 4px;border-top:1px solid #F1F1EC">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <div style="width:30px;height:30px;flex:none;border-radius:999px;background:#F4F3EF;color:#141414;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ row.initial }}</div>
+                  <div style="font-size:13px;font-weight:600;color:#141414">{{ row.name }}</div>
+                </div>
+                <div style="font-size:12px;color:rgba(20,20,20,0.55)">{{ row.date }}</div>
+                <div><span style="font-size:11px;font-weight:600;padding:4px 10px;border-radius:999px;background:{{ row.chipBg }};color:{{ row.chipColor }}">{{ row.status }}</span></div>
+                <div style="font-size:13px;font-weight:600;color:#141414;text-align:right">{{ row.amount }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="background:#fff;border-radius:20px;padding:20px;box-sizing:border-box">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div style="font-size:15px;font-weight:700;color:#141414">Statistics</div>
+              <div style="background:#F4F3EF;border-radius:999px;padding:6px 12px;font-size:11px;font-weight:500;color:#141414">This Month ⌄</div>
+            </div>
+            <div style="position:relative;width:150px;height:150px;margin:22px auto 0;border-radius:50%;background:{{ donutGradient }}">
+              <div style="position:absolute;inset:14px;background:#fff;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                <div style="font-size:10px;color:rgba(20,20,20,0.5);font-weight:600">Total</div>
+                <div style="font-size:18px;font-weight:700;color:#141414">$142.3K</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-top:20px">
+              <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px"><span style="display:flex;align-items:center;gap:6px;color:rgba(20,20,20,0.6)"><span style="width:8px;height:8px;border-radius:50%;background:#141414;display:inline-block"></span>Client Revenue</span><span style="font-weight:600;color:#141414">$108.1K</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px"><span style="display:flex;align-items:center;gap:6px;color:rgba(20,20,20,0.6)"><span style="width:8px;height:8px;border-radius:50%;background:#EAF76A;display:inline-block"></span>Retainer Revenue</span><span style="font-weight:600;color:#141414">$34.2K</span></div>
+            </div>
+          </div>
+
+          <div style="background:#fff;border-radius:20px;padding:20px;box-sizing:border-box">
+            <div style="font-size:15px;font-weight:700;color:#141414;margin-bottom:10px">Recent Activity</div>
+            <sc-for list="{{ recentActivity }}" as="act" hint-placeholder-count="5">
+              <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid #F1F1EC">
+                <div style="width:32px;height:32px;flex:none;border-radius:999px;background:#141414;color:#EAF76A;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ act.initial }}</div>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:12px;font-weight:600;color:#141414">{{ act.label }}</div>
+                  <div style="font-size:11px;color:rgba(20,20,20,0.5)">{{ act.sub }} · {{ act.time }}</div>
+                </div>
+                <div style="font-size:12px;font-weight:700;color:{{ act.amountColor }};flex:none">{{ act.amount }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isAnalytics }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px">
+        <div><div style="font-size:30px;font-weight:700;color:#141414">Analytics</div><div style="font-size:14px;color:rgba(20,20,20,0.55);margin-top:6px">How the pipeline is performing this quarter</div></div>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:20px;flex-wrap:wrap">
+        <sc-for list="{{ analyticsTabs }}" as="t" hint-placeholder-count="5">
+          <div style="padding:10px 18px;border-radius:999px;font-size:13px;font-weight:500;background:{{ t.bg }};color:{{ t.color }}">{{ t.label }}</div>
+        </sc-for>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:16px">
+        <sc-for list="{{ topAnalyticsMetrics }}" as="m" hint-placeholder-count="4">
+          <div style="background:#fff;border-radius:20px;padding:18px;box-sizing:border-box;min-width:0">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="font-size:12px;font-weight:600;color:rgba(20,20,20,0.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ m.label }}</div>
+              <div style="font-size:10px;font-weight:600;color:rgba(20,20,20,0.4);background:#F4F3EF;border-radius:999px;padding:2px 7px;flex:none">365d</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:8px">
+              <div style="font-size:22px;font-weight:700;color:#141414;white-space:nowrap">{{ m.value }}</div>
+              <div dangerouslySetInnerHTML="{{ m.miniHtml }}" style="flex:none"></div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:20px;flex-wrap:wrap;gap:12px">
+        <div style="font-size:16px;font-weight:700;color:#141414">Deal Volume Timeseries</div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <div style="background:#fff;border-radius:999px;padding:8px 14px;font-size:12px;font-weight:500;color:#141414">All Stages ⌄</div>
+          <div style="background:#fff;border-radius:999px;padding:8px 14px;font-size:12px;font-weight:500;color:#141414">All Channels ⌄</div>
+          <div style="background:#141414;border-radius:999px;padding:8px 14px;font-size:12px;font-weight:500;color:#fff">365D ⌄</div>
+        </div>
+      </div>
+
+      <div style="position:relative;background:#141414;border-radius:20px;padding:24px;box-sizing:border-box;margin-top:14px;min-height:280px">
+        <div style="display:flex;align-items:center;gap:14px;font-size:12px;color:rgba(255,255,255,0.6)">
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:16px;height:2px;background:#EAF76A;display:inline-block"></span>Pipeline Value</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:16px;height:2px;background:rgba(255,255,255,0.5);display:inline-block;border-top:2px dashed rgba(255,255,255,0.5)"></span>Deals</span>
+        </div>
+        <svg viewBox="0 0 760 200" style="width:100%;height:200px;margin-top:10px;display:block" preserveAspectRatio="none">
+          <sc-for list="{{ gridLinesY }}" as="gy" hint-placeholder-count="5">
+            <line x1="0" y1="{{ gy }}" x2="760" y2="{{ gy }}" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4 4"></line>
+          </sc-for>
+          <path d="{{ dealsPath }}" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-dasharray="5 5"></path>
+          <path d="{{ valueSolidPath }}" fill="none" stroke="#EAF76A" stroke-width="2.5"></path>
+          <path d="{{ valueDashedPath }}" fill="none" stroke="#EAF76A" stroke-width="2.5" stroke-dasharray="5 5"></path>
+          <sc-for list="{{ valueDots }}" as="p" hint-placeholder-count="12">
+            <circle cx="{{ p.x }}" cy="{{ p.y }}" r="3.5" fill="#141414" stroke="#EAF76A" stroke-width="2"></circle>
+          </sc-for>
+        </svg>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,0.4);margin-top:6px">
+          <span>Jan</span><span>Mar</span><span>May</span><span>Jul</span><span>Sep</span><span>Nov</span>
+        </div>
+
+        <div style="position:absolute;top:20px;right:20px;background:#fff;border-radius:16px;padding:14px 18px;box-sizing:border-box;width:150px">
+          <div style="font-size:11px;font-weight:600;color:rgba(20,20,20,0.5)">Win Rate</div>
+          <div style="font-size:22px;font-weight:700;color:#141414;margin-top:4px">58%</div>
+          <div style="font-size:11px;font-weight:600;color:#3B8A3B;margin-top:2px">↑ 8%</div>
+        </div>
+
+        <div style="position:absolute;bottom:20px;right:20px;background:#fff;border-radius:16px;padding:14px 18px;box-sizing:border-box;width:170px">
+          <div style="font-size:11px;font-weight:600;color:#141414">Top Channel: Referral</div>
+          <div style="display:flex;align-items:flex-end;gap:3px;height:44px;margin-top:10px">
+            <sc-for list="{{ topChannelBars }}" as="h" hint-placeholder-count="8">
+              <div style="flex:1;border-radius:3px 3px 0 0;background:#EAF76A;height:{{ h }}"></div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#fff;border-radius:20px;padding:8px 20px;margin-top:16px">
+        <div style="display:grid;grid-template-columns:28px 1.6fr 1.3fr 1fr 0.7fr 0.7fr 0.9fr;font-size:11px;font-weight:600;color:rgba(20,20,20,0.4);text-transform:uppercase;letter-spacing:0.03em;padding:14px 4px">
+          <div>#</div><div>Client</div><div>Market Share</div><div>Pipeline</div><div>Deals</div><div>New</div><div>Won</div>
+        </div>
+        <sc-for list="{{ analyticsTable }}" as="row" hint-placeholder-count="5">
+          <div style="display:grid;grid-template-columns:28px 1.6fr 1.3fr 1fr 0.7fr 0.7fr 0.9fr;align-items:center;padding:12px 4px;border-top:1px solid #F1F1EC">
+            <div style="font-size:12px;color:rgba(20,20,20,0.45)">{{ row.rank }}</div>
+            <div style="display:flex;align-items:center;gap:10px;min-width:0">
+              <div style="width:28px;height:28px;flex:none;border-radius:999px;background:#141414;color:#EAF76A;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ row.initial }}</div>
+              <div style="font-size:13px;font-weight:600;color:#141414;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ row.company }}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="font-size:12px;font-weight:600;color:#141414;width:40px;flex:none">{{ row.sharePct }}</div>
+              <div style="flex:1;height:6px;border-radius:999px;background:#F1F1EC;overflow:hidden"><div style="height:100%;border-radius:999px;background:#EAF76A;width:{{ row.shareBar }}"></div></div>
+            </div>
+            <div style="font-size:13px;color:rgba(20,20,20,0.7)">{{ row.value }}</div>
+            <div style="font-size:13px;color:rgba(20,20,20,0.7)">{{ row.deals }}</div>
+            <div style="font-size:13px;color:rgba(20,20,20,0.7)">{{ row.newDeals }}</div>
+            <div style="display:flex;align-items:center;gap:6px"><span style="font-size:13px;font-weight:700;color:#141414">{{ row.won }}</span><span style="font-size:10px;font-weight:600;background:#F4F3EF;color:rgba(20,20,20,0.55);border-radius:999px;padding:2px 6px">{{ row.wonPct }}</span></div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isKnowledge }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px">
+        <div><div style="font-size:30px;font-weight:700;color:#141414">Knowledge Base</div><div style="font-size:14px;color:rgba(20,20,20,0.55);margin-top:6px">Playbooks, SOPs and templates for running engagements</div></div>
+        <button style="background:#141414;color:#fff;border:none;border-radius:999px;padding:13px 20px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;flex:none" style-hover="background:#2a2a2a">+ New Doc</button>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px;background:#141414;border-radius:999px;padding:14px 20px;margin-top:22px;box-sizing:border-box">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="#EAF76A"><path d="M12 2l1.6 4.8L18 8l-4.4 1.6L12 14l-1.6-4.4L6 8l4.4-1.2z"></path></svg>
+        <div style="flex:1;font-size:14px;color:rgba(255,255,255,0.5)">Search the knowledge base</div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:18px;flex-wrap:wrap;gap:10px">
+        <div style="font-size:13px;color:rgba(20,20,20,0.55)">Showing <span style="font-weight:700;color:#141414">{{ knowledgeArticles.length }}</span> documents</div>
+        <div style="display:flex;gap:8px">
+          <div style="display:flex;align-items:center;gap:6px;background:#fff;border-radius:999px;padding:8px 14px;font-size:12px;font-weight:500;color:#141414">Filter</div>
+          <div style="display:flex;align-items:center;gap:6px;background:#fff;border-radius:999px;padding:8px 14px;font-size:12px;font-weight:500;color:#141414">Newest first ⌄</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;margin-top:16px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:12px;min-width:0">
+          <sc-for list="{{ knowledgeArticles }}" as="a" hint-placeholder-count="6">
+            <div style="background:#fff;border-radius:18px;padding:18px;box-sizing:border-box;cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:16px" style-hover="background:#FCFCFA">
+              <div style="display:flex;align-items:flex-start;gap:14px;min-width:0">
+                <div style="width:36px;height:36px;flex:none;border-radius:999px;background:#F4F3EF;display:flex;align-items:center;justify-content:center" dangerouslySetInnerHTML="{{ a.iconHtml }}"></div>
+                <div style="min-width:0">
+                  <div style="font-size:14px;font-weight:700;color:#141414">{{ a.title }}</div>
+                  <div style="font-size:12px;color:rgba(20,20,20,0.55);margin-top:4px;line-height:1.4">{{ a.desc }}</div>
+                </div>
+              </div>
+              <div style="font-size:11px;color:rgba(20,20,20,0.4);white-space:nowrap;flex:none;text-align:right">{{ a.date }}<br>{{ a.source }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="background:#fff;border-radius:20px;box-sizing:border-box;display:flex;flex-direction:column;height:520px">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 18px 14px;border-bottom:1px solid #F1F1EC">
+            <div style="font-size:15px;font-weight:700;color:#141414">Ask Friday</div>
+            <div style="background:#F4F3EF;border-radius:999px;padding:6px 12px;font-size:11px;font-weight:600;color:#141414;cursor:pointer;white-space:nowrap;flex:none">New Chat</div>
+          </div>
+          <div style="flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ kbMessages }}" as="m" hint-placeholder-count="2">
+              <div style="align-self:{{ m.align }};max-width:88%;background:{{ m.bg }};color:{{ m.color }};padding:10px 14px;border-radius:14px;font-size:12px;line-height:1.5">{{ m.text }}</div>
+            </sc-for>
+          </div>
+          <div style="padding:14px 18px;border-top:1px solid #F1F1EC">
+            <div style="background:#F4F3EF;border-radius:12px;padding:10px 14px;font-size:13px;color:rgba(20,20,20,0.4)">Ask about a playbook or SOP…</div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isAgentsPage }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px">
+        <div><div style="font-size:30px;font-weight:700;color:#141414">Agents</div><div style="font-size:14px;color:rgba(20,20,20,0.55);margin-top:6px">Your AI teammates</div></div>
+        <button style="background:#141414;color:#fff;border:none;border-radius:999px;padding:13px 20px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;flex:none" style-hover="background:#2a2a2a">+ New Agent</button>
+      </div>
+
+      <div style="display:flex;gap:16px;margin-top:22px">
+        <sc-for list="{{ agentStats }}" as="s" hint-placeholder-count="3">
+          <div style="flex:1;min-width:0;background:{{ s.bg }};border-radius:20px;padding:18px;box-sizing:border-box">
+            <div style="font-size:13px;font-weight:600;color:{{ s.color }};opacity:0.75">{{ s.label }}</div>
+            <div style="font-size:26px;font-weight:700;color:{{ s.color }};margin-top:10px">{{ s.value }}</div>
+            <div style="font-size:12px;margin-top:2px;color:{{ s.subColor }}">{{ s.sub }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px">
+        <sc-for list="{{ agentCards }}" as="a" hint-placeholder-count="3">
+          <div style="background:#fff;border-radius:20px;padding:20px;box-sizing:border-box;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="width:40px;height:40px;border-radius:999px;background:#141414;display:flex;align-items:center;justify-content:center;color:#EAF76A;font-weight:700;font-size:15px">{{ a.initial }}</div>
+              <div style="display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:50%;background:#EAF76A;display:inline-block"></span><span style="font-size:11px;font-weight:600;color:rgba(20,20,20,0.5)">Online</span></div>
+            </div>
+            <div><div style="font-size:15px;font-weight:700;color:#141414">{{ a.name }}</div><div style="font-size:11px;font-weight:600;color:rgba(20,20,20,0.5);margin-top:2px">{{ a.role }}</div></div>
+            <div style="font-size:12px;color:rgba(20,20,20,0.6);line-height:1.5;flex:1">{{ a.desc }}</div>
+            <div style="display:flex;gap:3px">
+              <sc-for list="{{ a.capsules }}" as="c" hint-placeholder-count="8">
+                <div style="flex:1;height:22px;border-radius:999px;background:{{ c.bg }};border:{{ c.border }}"></div>
+              </sc-for>
+            </div>
+            <button onClick="{{ a.onClick }}" style="background:#141414;color:#fff;border:none;border-radius:999px;padding:10px;font-size:13px;font-weight:600;cursor:pointer" style-hover="background:#2a2a2a">Open {{ a.name }}</button>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="background:#fff;border-radius:20px;padding:20px;box-sizing:border-box;margin-top:16px">
+        <div style="font-size:15px;font-weight:700;color:#141414;margin-bottom:10px">Recent Agent Activity</div>
+        <sc-for list="{{ agentActivity }}" as="act" hint-placeholder-count="4">
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid #F1F1EC">
+            <div style="width:32px;height:32px;flex:none;border-radius:999px;background:#141414;color:#EAF76A;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ act.initial }}</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:13px;font-weight:600;color:#141414">{{ act.label }}</div>
+              <div style="font-size:12px;color:rgba(20,20,20,0.5);margin-top:1px">{{ act.sub }}</div>
+            </div>
+            <div style="font-size:12px;color:rgba(20,20,20,0.4);flex:none;white-space:nowrap">{{ act.time }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+      <div><div style="font-size:30px;font-weight:700;color:#141414">Settings</div><div style="font-size:14px;color:rgba(20,20,20,0.55);margin-top:6px">Workspace preferences</div></div>
+
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;margin-top:22px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+
+          <div style="background:#fff;border-radius:20px;padding:20px;box-sizing:border-box">
+            <div style="font-size:15px;font-weight:700;color:#141414;margin-bottom:6px">Notifications</div>
+            <sc-for list="{{ notificationRows }}" as="row" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-top:1px solid #F1F1EC">
+                <div><div style="font-size:13px;font-weight:600;color:#141414">{{ row.label }}</div><div style="font-size:12px;color:rgba(20,20,20,0.5);margin-top:2px">{{ row.sub }}</div></div>
+                <div onClick="{{ row.onToggle }}" style="width:40px;height:22px;flex:none;border-radius:999px;background:{{ row.trackBg }};position:relative;cursor:pointer;box-sizing:border-box">
+                  <div style="position:absolute;top:2px;left:{{ row.knobLeft }};width:18px;height:18px;border-radius:50%;background:{{ row.knobBg }};transition:left 0.15s ease"></div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="background:#fff;border-radius:20px;padding:20px;box-sizing:border-box">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+              <div style="font-size:15px;font-weight:700;color:#141414">Team</div>
+              <div style="font-size:12px;font-weight:600;color:#141414;cursor:pointer">+ Invite</div>
+            </div>
+            <sc-for list="{{ teamMembers }}" as="tm" hint-placeholder-count="2">
+              <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid #F1F1EC">
+                <div style="width:32px;height:32px;flex:none;border-radius:999px;background:#141414;color:#EAF76A;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ tm.initial }}</div>
+                <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:#141414">{{ tm.name }}</div></div>
+                <div style="font-size:11px;font-weight:600;padding:4px 10px;border-radius:999px;background:#F4F3EF;color:rgba(20,20,20,0.6)">{{ tm.role }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="background:#fff;border-radius:20px;padding:20px;box-sizing:border-box">
+            <div style="font-size:15px;font-weight:700;color:#141414;margin-bottom:6px">Integrations</div>
+            <sc-for list="{{ integrations }}" as="ig" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-top:1px solid #F1F1EC">
+                <div style="font-size:13px;font-weight:600;color:#141414">{{ ig.name }}</div>
+                <div style="font-size:11px;font-weight:600;padding:4px 10px;border-radius:999px;background:{{ ig.chipBg }};color:{{ ig.chipColor }}">{{ ig.status }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="background:#141414;border-radius:20px;padding:20px;box-sizing:border-box">
+            <div style="width:40px;height:40px;border-radius:999px;background:#EAF76A;display:flex;align-items:center;justify-content:center;font-weight:700;color:#141414;font-size:15px">FX</div>
+            <div style="font-size:15px;font-weight:700;color:#fff;margin-top:14px">Fluxaro OS</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.55);margin-top:2px">2 of 3 seats used</div>
+          </div>
+          <div style="background:#fff;border-radius:20px;padding:20px;box-sizing:border-box">
+            <div style="font-size:13px;font-weight:600;color:rgba(20,20,20,0.55)">Current Plan</div>
+            <div style="font-size:20px;font-weight:700;color:#141414;margin-top:8px">Growth</div>
+            <div style="font-size:12px;color:rgba(20,20,20,0.5);margin-top:2px">$249/mo · Renews Sep 15, 2026</div>
+            <button style="background:#141414;color:#fff;border:none;border-radius:999px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;width:100%;margin-top:16px;box-sizing:border-box" style-hover="background:#2a2a2a">Manage Billing</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+  </div>
+
+  <sc-if value="{{ agentOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;background:rgba(15,23,42,0.35);z-index:10" onClick="{{ toggleAgentPanel }}"></div>
+  </sc-if>
+  <div style="position:fixed;top:16px;right:{{ agentPanelRight }};bottom:16px;width:380px;background:#fff;border-radius:20px;box-shadow:0 12px 48px rgba(0,0,0,0.22);z-index:11;transition:right 0.25s ease;display:flex;flex-direction:column;box-sizing:border-box">
+    <div style="padding:20px 20px 12px;border-bottom:1px solid #F1F5F9">
+      <div style="font-size:16px;font-weight:700;color:#141414;margin-bottom:12px">Agents</div>
+      <div style="display:flex;gap:6px">
+        <sc-for list="{{ agentTabs }}" as="a" hint-placeholder-count="3">
+          <div onClick="{{ a.onClick }}" style="padding:7px 12px;border-radius:999px;font-size:12px;font-weight:500;cursor:pointer;background:{{ a.bg }};color:{{ a.color }}">{{ a.label }}</div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px">
+      <sc-for list="{{ agentMessages }}" as="m" hint-placeholder-count="2">
+        <div style="align-self:{{ m.align }};max-width:85%;background:{{ m.bg }};color:{{ m.color }};padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.5">{{ m.text }}</div>
+      </sc-for>
+    </div>
+    <div style="padding:14px 20px;border-top:1px solid #F1F5F9">
+      <div style="background:#F1F5F9;border-radius:12px;padding:10px 14px;font-size:13px;color:#94A3B8">Message {{ activeAgentName }}…</div>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    activeModule: 'command-center',
+    agentOpen: false,
+    activeAgent: 'friday',
+    settingsToggles: { email: true, slack: false, digest: true }
+  };
+
+  icon(paths, color, size) {
+    return { __html: `<svg width="${size||18}" height="${size||18}" viewBox="0 0 24 24" fill="none" stroke="${color||'currentColor'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>` };
+  }
+
+  agentContent = {
+    friday: {
+      label: 'Friday',
+      messages: [
+        { align: 'flex-end', bg: '#141414', color: '#fff', text: "What's the status of Beacon Health?" },
+        { align: 'flex-start', bg: '#F1F5F9', color: '#0F172A', text: "Proposal sent 3 days ago, no reply yet — it's overdue for follow-up. Want me to draft a nudge?" }
+      ]
+    },
+    proposal: {
+      label: 'Proposal Agent',
+      messages: [
+        { align: 'flex-end', bg: '#141414', color: '#fff', text: 'Draft a proposal for Vantage Legal from the audit notes.' },
+        { align: 'flex-start', bg: '#F1F5F9', color: '#0F172A', text: 'Draft ready: scope, timeline, Growth Gap scores and pricing based on the audit. Review before sending.' }
+      ]
+    },
+    content: {
+      label: 'Content Agent',
+      messages: [
+        { align: 'flex-end', bg: '#141414', color: '#fff', text: 'Draft a LinkedIn post about the Solstice Retail win.' },
+        { align: 'flex-start', bg: '#F1F5F9', color: '#0F172A', text: "Here's a short post highlighting the Growth Gap results and timeline. Ready for your review." }
+      ]
+    }
+  };
+
+  sidebarDefs = [
+    { key: 'command-center', label: 'Command Center', icon: '<rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect>' },
+    { key: 'crm', label: 'Clients', icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>' },
+    { key: 'proposals', label: 'Proposals', icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="8" y1="13" x2="16" y2="13"></line><line x1="8" y1="17" x2="16" y2="17"></line>' },
+    { key: 'cashflow', label: 'Cashflow', icon: '<line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>' },
+    { key: 'analytics', label: 'Analytics', icon: '<line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line>' },
+    { key: 'knowledge', label: 'Knowledge Base', icon: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>' },
+    { key: 'agents', label: 'Agents', icon: '<circle cx="12" cy="12" r="3"></circle><path d="M12 1v4M12 19v4M4.2 4.2l2.8 2.8M17 17l2.8 2.8M1 12h4M19 12h4M4.2 19.8L7 17M17 7l2.8-2.8"></path>' },
+    { key: 'settings', label: 'Settings', icon: '<circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.63.85 1.05 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>' }
+  ];
+
+  chartRaw = [
+    { label: '19 Aug', deals: 42, rev: 30 },
+    { label: '20 Aug', deals: 32, rev: 55 },
+    { label: '21 Aug', deals: 58, rev: 40 },
+    { label: '22 Aug', deals: 25, rev: 18 },
+    { label: '23 Aug', deals: 78, rev: 46, badge: '87%' },
+    { label: '24 Aug', deals: 20, rev: 62, badge: '32%' },
+    { label: '25 Aug', deals: 50, rev: 34 },
+    { label: '26 Aug', deals: 44, rev: 52 }
+  ];
+
+  renderVals() {
+    const sidebarItems = this.sidebarDefs.map(d => ({
+      label: d.label,
+      bg: this.state.activeModule === d.key ? '#2A2A2A' : 'transparent',
+      iconHtml: this.icon(d.icon, this.state.activeModule === d.key ? '#fff' : '#8A8A86'),
+      onClick: () => this.setState({ activeModule: d.key })
+    }));
+
+    const tabDefs = [
+      { label: 'Overview', onClick: () => this.setState({ activeModule: 'command-center' }) },
+      { label: 'Clients', onClick: () => this.setState({ activeModule: 'crm' }) },
+      { label: 'Proposals', onClick: () => this.setState({ activeModule: 'proposals' }) },
+      { label: 'Cashflow', onClick: () => this.setState({ activeModule: 'cashflow' }) },
+      { label: 'Analytics', onClick: () => this.setState({ activeModule: 'analytics' }) }
+    ];
+    const tabs = tabDefs.map((t, i) => ({
+      label: t.label,
+      bg: i === 0 ? '#141414' : '#fff',
+      color: i === 0 ? '#fff' : '#141414',
+      shadow: i === 0 ? 'none' : '0 2px 8px rgba(0,0,0,0.06)',
+      onClick: t.onClick
+    }));
+
+    const agent = this.agentContent[this.state.activeAgent];
+    const agentTabs = Object.keys(this.agentContent).map(k => ({
+      label: this.agentContent[k].label,
+      bg: this.state.activeAgent === k ? '#141414' : '#F1F5F9',
+      color: this.state.activeAgent === k ? '#fff' : '#64748B',
+      onClick: () => this.setState({ activeAgent: k })
+    }));
+
+    const capsules = (filled, total) => Array.from({ length: total }, (_, i) => ({
+      bg: i < filled ? '#141414' : 'transparent',
+      border: i < filled ? 'none' : '1px dashed rgba(20,20,20,0.25)'
+    }));
+
+    const statCards = [
+      {
+        label: 'Active Deals', value: '7', pct: '58%', sub: '4 in discovery',
+        bg: '#fff', iconBg: '#F4F3EF',
+        iconHtml: this.icon('<circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"></path>', '#141414', 14),
+        capsules: capsules(5, 8)
+      },
+      {
+        label: 'Proposals Out', value: '$86K', pct: '42%', sub: '2 awaiting reply',
+        bg: '#EAF76A', iconBg: 'rgba(20,20,20,0.08)',
+        iconHtml: this.icon('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline>', '#141414', 14),
+        capsules: capsules(3, 8)
+      }
+    ];
+
+    const chartData = this.chartRaw.map(d => ({
+      label: d.label,
+      dealsH: Math.round(d.deals) + '%',
+      revH: Math.round(d.rev) + '%',
+      badge: d.badge || null,
+      noBadge: !d.badge
+    }));
+
+    const squareLinks = [
+      { label: 'Playbook', onClick: () => this.setState({ activeModule: 'knowledge' }), iconHtml: this.icon('<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>', '#141414', 20) },
+      { label: 'Docs', onClick: () => this.setState({ activeModule: 'knowledge' }), iconHtml: this.icon('<circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 2-3 4"></path><line x1="12" y1="17" x2="12.01" y2="17"></line>', '#141414', 20) }
+    ];
+
+    const rightLinks = [
+      { title: 'Help Center', sub: 'Setup and workflow questions', onClick: () => {}, iconHtml: this.icon('<circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 2-3 4"></path><line x1="12" y1="17" x2="12.01" y2="17"></line>', '#141414', 14) },
+      { title: 'Client Directory', sub: 'Every active and past relationship', onClick: () => this.setState({ activeModule: 'crm' }), iconHtml: this.icon('<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle>', '#141414', 14) },
+      { title: 'Playbook', sub: 'SOPs for running engagements', onClick: () => this.setState({ activeModule: 'knowledge' }), iconHtml: this.icon('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>', '#141414', 14) },
+      { title: 'Case Studies', sub: 'How past engagements were scoped', onClick: () => this.setState({ activeModule: 'analytics' }), iconHtml: this.icon('<line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line>', '#141414', 14) }
+    ];
+
+    const clientBarChart = [
+      { label: 'Mar', pct: 40 }, { label: 'Apr', pct: 55 }, { label: 'May', pct: 35 },
+      { label: 'Jun', pct: 70 }, { label: 'Jul', pct: 50 }, { label: 'Aug', pct: 85 }
+    ].map((d, i, arr) => ({ label: d.label, h: d.pct + '%', bg: i === arr.length - 1 ? '#EAF76A' : '#141414' }));
+
+    const winRateDots = Array.from({ length: 32 }, (_, i) => ({
+      bg: i < 13 ? '#141414' : i >= 26 ? '#EAF76A' : '#EDEDE6'
+    }));
+
+    const clientKanban = [
+      { title: 'In Touch', count: 2, cards: [
+        { company: 'Acme Robotics', tag: 'New', tagBg: '#141414', tagColor: '#fff', desc: 'Intro call requested via referral', date: 'Aug 28', value: '—', bg: '#fff', textColor: '#141414', subColor: 'rgba(20,20,20,0.55)', divider: '#F1F1EC', metaColor: 'rgba(20,20,20,0.45)' },
+        { company: 'Nordic Freight Co', tag: 'Discovery', tagBg: '#EAF76A', tagColor: '#141414', desc: 'Discovery call scheduled today', date: 'Aug 26, 2:00 PM', value: '—', bg: '#fff', textColor: '#141414', subColor: 'rgba(20,20,20,0.55)', divider: '#F1F1EC', metaColor: 'rgba(20,20,20,0.45)' }
+      ] },
+      { title: 'Offer Sent', count: 3, cards: [
+        { company: 'Vantage Legal', tag: 'Priority', tagBg: '#EAF76A', tagColor: '#141414', desc: 'ICP score 91 — send audit results', date: 'Aug 24', value: '—', bg: '#141414', textColor: '#fff', subColor: 'rgba(255,255,255,0.65)', divider: 'rgba(255,255,255,0.15)', metaColor: 'rgba(255,255,255,0.55)' },
+        { company: 'Beacon Health', tag: 'Proposal Sent', tagBg: '#FFFBEB', tagColor: '#D97706', desc: 'Sent 3 days ago, no response yet', date: 'Aug 25', value: '$42,000', bg: '#fff', textColor: '#141414', subColor: 'rgba(20,20,20,0.55)', divider: '#F1F1EC', metaColor: 'rgba(20,20,20,0.45)' },
+        { company: 'Corven Manufacturing', tag: 'Negotiation', tagBg: '#FFFBEB', tagColor: '#D97706', desc: 'Awaiting redline from legal', date: 'Aug 20', value: '$68,000', bg: '#fff', textColor: '#141414', subColor: 'rgba(20,20,20,0.55)', divider: '#F1F1EC', metaColor: 'rgba(20,20,20,0.45)' }
+      ] },
+      { title: 'Discussion', count: 2, cards: [
+        { company: 'Solstice Retail', tag: 'Won', tagBg: '#EAF76A', tagColor: '#141414', desc: 'Kickoff scheduled next week', date: 'Sep 2', value: '$28,500', bg: '#fff', textColor: '#141414', subColor: 'rgba(20,20,20,0.55)', divider: '#F1F1EC', metaColor: 'rgba(20,20,20,0.45)' },
+        { company: 'Harlow & Finch', tag: 'Lost', tagBg: '#F4F3EF', tagColor: '#8A8A86', desc: 'Budget cut, revisit next quarter', date: 'Aug 3', value: '—', bg: '#fff', textColor: '#141414', subColor: 'rgba(20,20,20,0.55)', divider: '#F1F1EC', metaColor: 'rgba(20,20,20,0.45)' }
+      ] }
+    ];
+
+    const deltaFmt = (v) => ({ delta: Math.abs(v) + '%', deltaArrow: v >= 0 ? '↑' : '↓', deltaColor: v >= 0 ? '#3B8A3B' : '#DC2626' });
+    const breakdown = (rows) => rows.map(([label, value, d]) => ({ label, value, ...deltaFmt(d) }));
+    const proposalMetrics = [
+      { title: 'Proposals Sent', value: '6', ...deltaFmt(20), breakdown: breakdown([['Referral', '2', 21], ['Outbound', '3', 12], ['Inbound', '1', 0]]) },
+      { title: 'Proposals Won', value: '3', ...deltaFmt(15), breakdown: breakdown([['Referral', '1', 21], ['Outbound', '2', 8], ['Inbound', '0', 0]]) },
+      { title: 'Response Rate', value: '58%', ...deltaFmt(8), breakdown: breakdown([['Referral', '71%', 12], ['Outbound', '48%', 5], ['Inbound', '60%', 0]]) },
+      { title: 'Avg Deal Size', value: '$36,700', ...deltaFmt(-5), breakdown: breakdown([['Referral', '$41,200', 9], ['Outbound', '$33,900', -8], ['Inbound', '$28,500', 0]]) },
+      { title: 'Pipeline Value', value: '$110,300', ...deltaFmt(22), breakdown: breakdown([['Referral', '$42,000', 12], ['Outbound', '$68,300', 28], ['Inbound', '$0', 0]]) },
+      { title: 'Avg Time to Close', value: '18 days', ...deltaFmt(-12), breakdown: breakdown([['Referral', '14 days', -18], ['Outbound', '22 days', -6], ['Inbound', '19 days', 0]]) }
+    ];
+
+    const cashflowActions = [
+      { label: 'Record Payment', bg: '#141414', color: '#fff', iconBg: '#2a2a2a', iconHtml: this.icon('<line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>', '#EAF76A', 14) },
+      { label: 'Log Expense', bg: '#fff', color: '#141414', iconBg: '#F4F3EF', iconHtml: this.icon('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline>', '#141414', 14) },
+      { label: 'Send Invoice', bg: '#fff', color: '#141414', iconBg: '#F4F3EF', iconHtml: this.icon('<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>', '#141414', 14) },
+      { label: 'Payout', bg: '#fff', color: '#141414', iconBg: '#F4F3EF', iconHtml: this.icon('<path d="M17 1l4 4-4 4"></path><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><path d="M7 23l-4-4 4-4"></path><path d="M21 13v2a4 4 0 0 1-4 4H3"></path>', '#141414', 14) }
+    ];
+    const recentPayments = [
+      { name: 'Beacon Health', initial: 'B', date: 'Aug 25, 2026', status: 'Pending', chipBg: '#FFFBEB', chipColor: '#D97706', amount: '+$21,000' },
+      { name: 'Corven Manufacturing', initial: 'C', date: 'Aug 22, 2026', status: 'Paid', chipBg: '#EAF76A', chipColor: '#141414', amount: '+$34,000' },
+      { name: 'Solstice Retail', initial: 'S', date: 'Aug 12, 2026', status: 'Paid', chipBg: '#EAF76A', chipColor: '#141414', amount: '+$28,500' },
+      { name: 'Vantage Legal', initial: 'V', date: 'Aug 18, 2026', status: 'Overdue', chipBg: '#FEE2E2', chipColor: '#DC2626', amount: '+$13,200' }
+    ];
+    const recentActivity = [
+      { label: 'Beacon Health', sub: 'Payment received', time: '11 minutes ago', amount: '+$21,000', amountColor: '#141414', initial: 'B' },
+      { label: 'Corven Mfg', sub: 'Invoice sent', time: '32 minutes ago', amount: '$34,000', amountColor: 'rgba(20,20,20,0.6)', initial: 'C' },
+      { label: 'Contractor Payout', sub: 'Design retainer', time: '1 hour ago', amount: '-$4,200', amountColor: '#DC2626', initial: 'P' },
+      { label: 'Solstice Retail', sub: 'Payment received', time: '3 hours ago', amount: '+$28,500', amountColor: '#141414', initial: 'S' },
+      { label: 'Software', sub: 'Subscription expense', time: '1 day ago', amount: '-$860', amountColor: '#DC2626', initial: 'S' }
+    ];
+    const donutGradient = 'conic-gradient(#141414 0deg 273.6deg, #EAF76A 273.6deg 360deg)';
+
+    const analyticsTabDefs = ['Overview', 'Clients', 'Proposals', 'Cashflow', 'Agents'];
+    const analyticsTabs = analyticsTabDefs.map((l, i) => ({ label: l, bg: i === 0 ? '#141414' : '#fff', color: i === 0 ? '#fff' : '#141414' }));
+
+    const barsHtml = (vals, color) => ({ __html: `<svg width="80" height="36" viewBox="0 0 80 36">${vals.map((v, i) => `<rect x="${i * 11}" y="${36 - v}" width="7" height="${v}" rx="2" fill="${color}"></rect>`).join('')}</svg>` });
+    const waveHtml = (pts, color) => ({ __html: `<svg width="80" height="36" viewBox="0 0 80 36"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2"></polyline></svg>` });
+    const dotsHtml = (n, filled, color) => ({ __html: `<svg width="60" height="36" viewBox="0 0 60 36">${Array.from({ length: n }, (_, i) => `<circle cx="${(i % 6) * 11 + 6}" cy="${Math.floor(i / 6) * 11 + 6}" r="3" fill="${i < filled ? color : '#EDEDE6'}"></circle>`).join('')}</svg>` });
+
+    const topAnalyticsMetrics = [
+      { label: 'Pipeline Value', value: '$412K', miniHtml: barsHtml([14, 22, 10, 30, 18, 26], '#141414') },
+      { label: 'Active Deals', value: '24', miniHtml: waveHtml('0,20 15,10 30,25 45,6 60,18 80,4', '#141414') },
+      { label: 'Avg Deal Size', value: '$36.7K', miniHtml: barsHtml([8, 26, 16, 34, 12, 28], '#EAF76A') },
+      { label: 'Clients Tracked', value: '18', miniHtml: dotsHtml(18, 18, '#141414') }
+    ];
+
+    const toXY = (vals) => vals.map((v, i) => [(i * 760) / (vals.length - 1), 200 - v * 1.7]);
+    const catmullRom2bezier = (points) => {
+      if (points.length < 2) return '';
+      let d = `M${points[0][0]},${points[0][1]}`;
+      for (let i = 0; i < points.length - 1; i++) {
+        const p0 = points[i - 1] || points[i];
+        const p1 = points[i];
+        const p2 = points[i + 1];
+        const p3 = points[i + 2] || p2;
+        const c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
+        const c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
+        d += ` C${c1x},${c1y} ${c2x},${c2y} ${p2[0]},${p2[1]}`;
+      }
+      return d;
+    };
+    const valuePts = toXY([30, 42, 38, 55, 48, 70, 62, 80, 74, 90, 85, 100]);
+    const dealsPts = toXY([50, 45, 60, 40, 58, 50, 65, 55, 70, 60, 75, 68]);
+    const gridLinesY = [0, 50, 100, 150, 200];
+    const valueSolidPath = catmullRom2bezier(valuePts.slice(0, -1));
+    const valueDashedPath = catmullRom2bezier(valuePts.slice(-2));
+    const dealsPath = catmullRom2bezier(dealsPts);
+    const valueDots = valuePts.map(([x, y]) => ({ x, y }));
+    const topChannelBars = [10, 14, 12, 18, 22, 28, 34, 44].map(v => v + '%');
+
+    const analyticsTable = [
+      { rank: 1, company: 'Corven Manufacturing', initial: 'C', sharePct: '24.6%', shareBar: '65%', value: '$68,000', deals: 3, newDeals: 1, won: 1, wonPct: '33%' },
+      { rank: 2, company: 'Beacon Health', initial: 'B', sharePct: '18.1%', shareBar: '48%', value: '$42,000', deals: 2, newDeals: 1, won: 0, wonPct: '0%' },
+      { rank: 3, company: 'Solstice Retail', initial: 'S', sharePct: '12.3%', shareBar: '33%', value: '$28,500', deals: 1, newDeals: 0, won: 1, wonPct: '100%' },
+      { rank: 4, company: 'Vantage Legal', initial: 'V', sharePct: '9.7%', shareBar: '26%', value: '$19,000', deals: 2, newDeals: 1, won: 0, wonPct: '0%' },
+      { rank: 5, company: 'Nordic Freight Co', initial: 'N', sharePct: '6.4%', shareBar: '17%', value: '$12,800', deals: 1, newDeals: 1, won: 0, wonPct: '0%' }
+    ];
+
+    const knowledgeArticles = [
+      { title: 'Client Onboarding Checklist', desc: 'Steps for kicking off a new engagement', date: 'Aug 24, 2026', source: 'via Notion', iconHtml: this.icon('<path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>', '#141414', 15) },
+      { title: 'Discovery Call Script', desc: 'Questions to run every first call', date: 'Aug 20, 2026', source: 'via Docs', iconHtml: this.icon('<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>', '#141414', 15) },
+      { title: 'Proposal Template Guide', desc: 'How to structure scope and pricing', date: 'Aug 18, 2026', source: 'via Notion', iconHtml: this.icon('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline>', '#141414', 15) },
+      { title: 'Audit Framework', desc: 'Growth Gap scoring methodology', date: 'Aug 14, 2026', source: 'via Docs', iconHtml: this.icon('<line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line>', '#141414', 15) },
+      { title: 'Handoff Runbook', desc: 'Moving a signed client into delivery', date: 'Aug 9, 2026', source: 'via Notion', iconHtml: this.icon('<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle>', '#141414', 15) },
+      { title: 'Pricing Guidelines', desc: 'Standard rates and discount limits', date: 'Aug 2, 2026', source: 'via Sheets', iconHtml: this.icon('<line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>', '#141414', 15) }
+    ];
+    const kbMessages = [
+      { align: 'flex-end', bg: '#141414', color: '#fff', text: 'What does the pricing guideline say about discounts?' },
+      { align: 'flex-start', bg: '#F4F3EF', color: '#141414', text: 'Standard discount cap is 10% for multi-quarter retainers. Anything beyond that needs sign-off. Want the full doc?' }
+    ];
+
+    const agentStats = [
+      { label: 'Active Agents', value: '3', sub: 'All online', bg: '#141414', color: '#fff', subColor: 'rgba(255,255,255,0.5)' },
+      { label: 'Automations Run', value: '128', sub: 'This month', bg: '#EAF76A', color: '#141414', subColor: 'rgba(20,20,20,0.55)' },
+      { label: 'Time Saved', value: '34 hrs', sub: 'Estimated this month', bg: '#fff', color: '#141414', subColor: 'rgba(20,20,20,0.5)' }
+    ];
+    const agentCards = [
+      { key: 'friday', name: 'Friday', initial: 'F', role: 'OPS ASSISTANT', desc: 'Tracks follow-ups, flags overdue deals, keeps the pipeline honest.', capsules: capsules(6, 8), onClick: () => this.setState({ activeAgent: 'friday', agentOpen: true }) },
+      { key: 'proposal', name: 'Proposal Agent', initial: 'P', role: 'DRAFTING', desc: 'Turns audit notes into a scoped proposal with pricing.', capsules: capsules(4, 8), onClick: () => this.setState({ activeAgent: 'proposal', agentOpen: true }) },
+      { key: 'content', name: 'Content Agent', initial: 'C', role: 'MARKETING', desc: 'Drafts posts and case studies from closed-won work.', capsules: capsules(2, 8), onClick: () => this.setState({ activeAgent: 'content', agentOpen: true }) }
+    ];
+    const agentActivity = [
+      { label: 'Friday flagged Beacon Health', sub: 'Follow-up overdue', time: '12 minutes ago', initial: 'F' },
+      { label: 'Proposal Agent drafted Vantage Legal scope', sub: 'Ready for review', time: '1 hour ago', initial: 'P' },
+      { label: 'Content Agent posted case study', sub: 'Solstice Retail win', time: '3 hours ago', initial: 'C' },
+      { label: 'Friday nudged Corven Manufacturing', sub: 'Redline reminder sent', time: 'Yesterday', initial: 'F' }
+    ];
+
+    const toggleRowDefs = [
+      { key: 'email', label: 'Email Alerts', sub: 'Pipeline activity and overdue proposals' },
+      { key: 'slack', label: 'Slack Alerts', sub: 'Post updates to #fluxaro-ops' },
+      { key: 'digest', label: 'Weekly Digest', sub: 'Summary every Monday morning' }
+    ];
+    const notificationRows = toggleRowDefs.map(d => {
+      const on = this.state.settingsToggles[d.key];
+      return {
+        label: d.label, sub: d.sub,
+        trackBg: on ? '#141414' : '#EDEDE6',
+        knobBg: on ? '#EAF76A' : '#fff',
+        knobLeft: on ? '20px' : '2px',
+        onToggle: () => this.setState(s => ({ settingsToggles: { ...s.settingsToggles, [d.key]: !s.settingsToggles[d.key] } }))
+      };
+    });
+    const teamMembers = [
+      { initial: 'A', name: 'Alex Rivera', role: 'Owner' },
+      { initial: 'J', name: 'Jamie Chen', role: 'Operator' }
+    ];
+    const integrations = [
+      { name: 'Google Calendar', status: 'Connected', chipBg: '#EAF76A', chipColor: '#141414' },
+      { name: 'Slack', status: 'Connected', chipBg: '#EAF76A', chipColor: '#141414' },
+      { name: 'Stripe', status: 'Not Connected', chipBg: '#F4F3EF', chipColor: 'rgba(20,20,20,0.5)' },
+      { name: 'HubSpot', status: 'Not Connected', chipBg: '#F4F3EF', chipColor: 'rgba(20,20,20,0.5)' }
+    ];
+
+    return {
+      sidebarItems,
+      isCommandCenter: this.state.activeModule === 'command-center',
+      isCrm: this.state.activeModule === 'crm',
+      isProposals: this.state.activeModule === 'proposals',
+      isCashflow: this.state.activeModule === 'cashflow',
+      isAnalytics: this.state.activeModule === 'analytics',
+      isKnowledge: this.state.activeModule === 'knowledge',
+      isAgentsPage: this.state.activeModule === 'agents',
+      isSettings: this.state.activeModule === 'settings',
+      activeModuleLabel: (this.sidebarDefs.find(d => d.key === this.state.activeModule) || {}).label,
+      goHome: () => this.setState({ activeModule: 'command-center' }),
+      goCrmFromDeals: () => this.setState({ activeModule: 'crm' }),
+      tabs,
+      statCards,
+      chartData,
+      squareLinks,
+      rightLinks,
+      clientBarChart, winRateDots, clientKanban,
+      proposalMetrics,
+      cashflowActions, recentPayments, recentActivity, donutGradient,
+      analyticsTabs, topAnalyticsMetrics, gridLinesY, valueSolidPath, valueDashedPath, dealsPath, valueDots, topChannelBars, analyticsTable,
+      knowledgeArticles, kbMessages,
+      agentStats, agentCards, agentActivity,
+      notificationRows, teamMembers, integrations,
+      toggleAgentPanel: () => this.setState(s => ({ agentOpen: !s.agentOpen })),
+      agentOpen: this.state.agentOpen,
+      agentPanelRight: this.state.agentOpen ? '16px' : '-420px',
+      agentTabs,
+      agentMessages: agent.messages,
+      activeAgentName: agent.label
+    };
+  }
+}
+
+</script>
+</body>
+</html>
