@@ -32,6 +32,7 @@ function ProposalDetailContent({ proposalId, onClose }: { proposalId: string; on
   const [lead, setLead] = useState<Lead | null>(null);
   const [loading, setLoading] = useState(true);
   const [transitioning, setTransitioning] = useState(false);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   useEffect(() => {
     fetch(`/api/proposals/${proposalId}`)
@@ -54,6 +55,17 @@ function ProposalDetailContent({ proposalId, onClose }: { proposalId: string; on
       const body = await res.json();
       setProposal(body.proposal);
       router.refresh();
+    } finally {
+      setTransitioning(false);
+    }
+  }
+
+  async function handleDelete() {
+    setTransitioning(true);
+    try {
+      await fetch(`/api/proposals/${proposalId}`, { method: "DELETE" });
+      router.refresh();
+      onClose();
     } finally {
       setTransitioning(false);
     }
@@ -185,6 +197,25 @@ function ProposalDetailContent({ proposalId, onClose }: { proposalId: string; on
                     Mark Lost
                   </button>
                 </>
+              )}
+            </div>
+
+            <div className="mt-2">
+              {confirmingDelete ? (
+                <button
+                  onClick={handleDelete}
+                  disabled={transitioning}
+                  className="w-full cursor-pointer rounded-full bg-red-600 py-2.5 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-50"
+                >
+                  Confirm delete
+                </button>
+              ) : (
+                <button
+                  onClick={() => setConfirmingDelete(true)}
+                  className="w-full cursor-pointer rounded-full py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50"
+                >
+                  Delete
+                </button>
               )}
             </div>
           </>

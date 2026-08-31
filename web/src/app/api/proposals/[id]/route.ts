@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getProposal, setProposalStatus, updateProposal } from "@/lib/proposals";
+import { deleteProposal, getProposal, setProposalStatus, updateProposal } from "@/lib/proposals";
 import type { NewProposalInput, ProposalStatus } from "@/lib/types";
 import { getLead } from "@/lib/leads";
 
@@ -38,6 +38,22 @@ export async function PATCH(
 
     const proposal = await updateProposal(id, body);
     return NextResponse.json({ proposal });
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Unknown error" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    await deleteProposal(id);
+    return NextResponse.json({ ok: true });
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Unknown error" },

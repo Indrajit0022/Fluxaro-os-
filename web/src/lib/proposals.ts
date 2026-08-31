@@ -85,6 +85,11 @@ const STATUS_TRANSITION_DETAIL: Record<ProposalStatus, string> = {
   lost: "Proposal lost",
 };
 
+export async function deleteProposal(id: string): Promise<void> {
+  const { error } = await supabaseServer.from("proposals").delete().eq("id", id);
+  if (error) throw new Error(error.message);
+}
+
 export async function setProposalStatus(id: string, status: ProposalStatus): Promise<Proposal> {
   const patch: Record<string, unknown> = { status };
   if (status === "sent") patch.sent_at = new Date().toISOString();
