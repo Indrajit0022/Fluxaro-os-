@@ -15,9 +15,11 @@ import {
 export function NewProposalModal({
   leadId,
   trigger,
+  onCreated,
 }: {
   leadId?: string;
   trigger: React.ReactNode;
+  onCreated?: () => void;
 }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -130,6 +132,7 @@ export function NewProposalModal({
       reset();
       setOpen(false);
       router.refresh();
+      onCreated?.();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {

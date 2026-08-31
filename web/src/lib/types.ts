@@ -154,3 +154,39 @@ export type NewProposalInput = {
   timeline_weeks_min?: number;
   timeline_weeks_max?: number;
 };
+
+export const PAYMENT_STATUSES = ["pending", "received", "overdue"] as const;
+export type PaymentStatus = (typeof PAYMENT_STATUSES)[number];
+
+export const PAYMENT_STATUS_LABELS: Record<PaymentStatus, string> = {
+  pending: "Pending",
+  received: "Received",
+  overdue: "Overdue",
+};
+
+export type Payment = {
+  id: string;
+  lead_id: string;
+  project: string | null;
+  milestone: string | null;
+  amount: number;
+  method: string | null;
+  status: PaymentStatus;
+  date_received: string | null;
+  expected_date: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type NewPaymentInput = {
+  lead_id: string;
+  project?: string;
+  milestone?: string;
+  amount: number;
+  method?: string;
+  status?: PaymentStatus;
+  date_received?: string;
+  expected_date?: string;
+  notes?: string;
+};

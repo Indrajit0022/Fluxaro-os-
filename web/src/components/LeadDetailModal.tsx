@@ -6,11 +6,14 @@ import {
   PIPELINE_STAGES,
   STAGE_LABELS,
   PROPOSAL_STATUS_LABELS,
+  PAYMENT_STATUS_LABELS,
   EVIDENCE_LABELS,
   type Audit,
   type Lead,
   type LeadActivity,
   type NewLeadInput,
+  type Payment,
+  type PaymentStatus,
   type PipelineStage,
   type Proposal,
   type ProposalStatus,
@@ -20,6 +23,8 @@ import { PILLARS, PILLAR_LABELS, OPERATING_SYSTEMS, type OperatingSystemKey } fr
 import { AuditModal } from "./AuditModal";
 import { NewProposalModal } from "./NewProposalModal";
 import { ProposalDetailModal } from "./ProposalDetailModal";
+import { NewPaymentModal } from "./NewPaymentModal";
+import { PaymentDetailModal } from "./PaymentDetailModal";
 
 function pillarData(audit: Audit, pillar: (typeof PILLARS)[number]) {
   switch (pillar) {
@@ -42,6 +47,12 @@ function proposalStatusStyle(status: ProposalStatus) {
   if (status === "sent") return { bg: "#FFFBEB", color: "#D97706" };
   if (status === "approved") return { bg: "#141414", color: "#fff" };
   return { bg: "#F4F3EF", color: "#141414" };
+}
+
+function paymentStatusStyle(status: PaymentStatus) {
+  if (status === "received") return { bg: "#EAF76A", color: "#141414" };
+  if (status === "overdue") return { bg: "#FEE2E2", color: "#DC2626" };
+  return { bg: "#FFFBEB", color: "#D97706" };
 }
 
 type FormState = {
@@ -95,6 +106,8 @@ function LeadDetailContent({ leadId, onClose }: { leadId: string; onClose: () =>
   const [latestAudit, setLatestAudit] = useState<Audit | null>(null);
   const [proposals, setProposals] = useState<Proposal[]>([]);
   const [openProposalId, setOpenProposalId] = useState<string | null>(null);
+  const [payments, setPayments] = useState<Payment[]>([]);
+  const [openPaymentId, setOpenPaymentId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -109,6 +122,9 @@ function LeadDetailContent({ leadId, onClose }: { leadId: string; onClose: () =>
     fetch(`/api/leads/${leadId}/proposals`)
       .then((res) => res.json())
       .then((body) => setProposals(body.proposals ?? []));
+    fetch(`/api/leads/${leadId}/payments`)
+      .then((res) => res.json())
+      .then((body) => setPayments(body.payments ?? []));
   }
 
   useEffect(() => {
@@ -300,6 +316,7 @@ function LeadDetailContent({ leadId, onClose }: { leadId: string; onClose: () =>
                     <div className="text-sm font-bold text-ink">Proposals</div>
                     <NewProposalModal
                       leadId={leadId}
+                      onCreated={refetchAuditsAndProposals}
                       trigger={
                         <span className="cursor-pointer rounded-full bg-panel px-3 py-1.5 text-[11px] font-semibold text-ink hover:bg-[#EFEFE9]">
                           + New Proposal
@@ -325,6 +342,45 @@ function LeadDetailContent({ leadId, onClose }: { leadId: string; onClose: () =>
                             style={proposalStatusStyle(p.status)}
                           >
                             {PROPOSAL_STATUS_LABELS[p.status]}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <div className="mt-6 border-t border-divider pt-4">
+                  <div className="flex items-center justify-between">
+                    <div className="text-sm font-bold text-ink">Payments</div>
+                    <NewPaymentModal
+                      leadId={leadId}
+                      onCreated={refetchAuditsAndProposals}
+                      trigger={
+                        <span className="cursor-pointer rounded-full bg-panel px-3 py-1.5 text-[11px] font-semibold text-ink hover:bg-[#EFEFE9]">
+                          + Record Payment
+                        </span>
+                      }
+                    />
+                  </div>
+                  {payments.length === 0 ? (
+                    <div className="mt-2 text-xs text-ink/40">No payments yet.</div>
+                  ) : (
+                    <div className="mt-2.5 flex flex-col gap-2">
+                      {payments.map((p) => (
+                        <div
+                          key={p.id}
+                          onClick={() => setOpenPaymentId(p.id)}
+                          className="flex cursor-pointer items-center justify-between rounded-lg bg-panel px-3 py-2 hover:bg-[#EFEFE9]"
+                        >
+                          <div className="truncate text-xs font-semibold text-ink">
+                            {formatCurrencyFull(p.amount)}
+                            {p.milestone ? ` · ${p.milestone}` : ""}
+                          </div>
+                          <span
+                            className="flex-none rounded-full px-2 py-0.5 text-[10px] font-semibold"
+                            style={paymentStatusStyle(p.status)}
+                          >
+                            {PAYMENT_STATUS_LABELS[p.status]}
                           </span>
                         </div>
                       ))}
@@ -486,6 +542,7 @@ function LeadDetailContent({ leadId, onClose }: { leadId: string; onClose: () =>
         )}
       </div>
       <ProposalDetailModal proposalId={openProposalId} onClose={() => setOpenProposalId(null)} />
+      <PaymentDetailModal paymentId={openPaymentId} onClose={() => setOpenPaymentId(null)} />
     </div>
   );
 }
