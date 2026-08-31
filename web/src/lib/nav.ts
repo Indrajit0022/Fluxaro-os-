@@ -19,6 +19,12 @@ export const NAV_ITEMS: NavItem[] = [
     icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>',
   },
   {
+    key: "growth-gap",
+    label: "Growth Gap",
+    href: "/growth-gap",
+    icon: '<circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>',
+  },
+  {
     key: "proposals",
     label: "Proposals",
     href: "/proposals",

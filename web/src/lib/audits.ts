@@ -5,6 +5,25 @@ import { PILLAR_LABELS } from "./operating-systems";
 
 const PILLAR_KEYS: PillarKey[] = ["demand", "revenue", "operations", "customer", "intelligence"];
 
+export async function listAudits(): Promise<Audit[]> {
+  const { data, error } = await supabaseServer
+    .from("audits")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return data as Audit[];
+}
+
+export async function getAudit(id: string): Promise<Audit | null> {
+  const { data, error } = await supabaseServer
+    .from("audits")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  return data as Audit | null;
+}
+
 export async function listAuditsForLead(leadId: string): Promise<Audit[]> {
   const { data, error } = await supabaseServer
     .from("audits")

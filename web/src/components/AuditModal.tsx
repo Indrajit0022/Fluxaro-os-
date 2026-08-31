@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { EVIDENCE_TYPES, EVIDENCE_LABELS, type EvidenceType, type PillarInput, type PillarKey } from "@/lib/types";
+import { useEffect, useState } from "react";
+import { EVIDENCE_TYPES, EVIDENCE_LABELS, type EvidenceType, type Lead, type PillarInput, type PillarKey } from "@/lib/types";
 import { PILLARS, PILLAR_LABELS } from "@/lib/operating-systems";
 
 type PillarForm = { score: string; evidence_type: EvidenceType | ""; evidence: string };
@@ -16,7 +16,7 @@ export function AuditModal({
   trigger,
   onCreated,
 }: {
-  leadId: string;
+  leadId?: string;
   trigger: React.ReactNode;
   onCreated?: () => void;
 }) {
@@ -24,6 +24,8 @@ export function AuditModal({
   const [open, setOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [leads, setLeads] = useState<Lead[]>([]);
+  const [selectedLeadId, setSelectedLeadId] = useState(leadId ?? "");
   const [pillars, setPillars] = useState<Record<PillarKey, PillarForm>>({
     demand: emptyPillar(),
     revenue: emptyPillar(),
@@ -35,12 +37,23 @@ export function AuditModal({
   const [businessImpact, setBusinessImpact] = useState("");
   const [notes, setNotes] = useState("");
 
+  useEffect(() => {
+    if (!open || leadId) return;
+    fetch("/api/leads")
+      .then((res) => res.json())
+      .then((body) => setLeads(body.leads ?? []));
+  }, [open, leadId]);
+
   function setPillar(key: PillarKey, patch: Partial<PillarForm>) {
     setPillars((p) => ({ ...p, [key]: { ...p[key], ...patch } }));
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!selectedLeadId) {
+      setError("Choose a lead first");
+      return;
+    }
     setSubmitting(true);
     setError(null);
     try {
@@ -57,7 +70,7 @@ export function AuditModal({
           evidence: f.evidence.trim() || null,
         } satisfies PillarInput;
       }
-      const res = await fetch(`/api/leads/${leadId}/audits`, {
+      const res = await fetch(`/api/leads/${selectedLeadId}/audits`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -93,6 +106,24 @@ export function AuditModal({
                 Verified unless you actually have data for it.
               </div>
             </div>
+
+            {!leadId && (
+              <label className="text-xs font-semibold text-ink/60">
+                Lead
+                <select
+                  value={selectedLeadId}
+                  onChange={(e) => setSelectedLeadId(e.target.value)}
+                  className="mt-1 w-full rounded-xl border border-black/10 px-3 py-2 text-sm text-ink outline-none focus:border-ink"
+                >
+                  <option value="">Select a lead…</option>
+                  {leads.map((l) => (
+                    <option key={l.id} value={l.id}>
+                      {l.company}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
 
             {PILLARS.map((key) => (
               <div key={key} className="rounded-xl border border-black/10 p-3">
