@@ -2,8 +2,47 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { PIPELINE_STAGES, STAGE_LABELS, type Lead, type LeadActivity, type NewLeadInput, type PipelineStage } from "@/lib/types";
+import {
+  PIPELINE_STAGES,
+  STAGE_LABELS,
+  PROPOSAL_STATUS_LABELS,
+  EVIDENCE_LABELS,
+  type Audit,
+  type Lead,
+  type LeadActivity,
+  type NewLeadInput,
+  type PipelineStage,
+  type Proposal,
+  type ProposalStatus,
+} from "@/lib/types";
 import { formatCurrencyFull } from "@/lib/format";
+import { PILLARS, PILLAR_LABELS, OPERATING_SYSTEMS, type OperatingSystemKey } from "@/lib/operating-systems";
+import { AuditModal } from "./AuditModal";
+import { NewProposalModal } from "./NewProposalModal";
+import { ProposalDetailModal } from "./ProposalDetailModal";
+
+function pillarData(audit: Audit, pillar: (typeof PILLARS)[number]) {
+  switch (pillar) {
+    case "demand":
+      return { score: audit.demand_score, evidenceType: audit.demand_evidence_type };
+    case "revenue":
+      return { score: audit.revenue_score, evidenceType: audit.revenue_evidence_type };
+    case "operations":
+      return { score: audit.operations_score, evidenceType: audit.operations_evidence_type };
+    case "customer":
+      return { score: audit.customer_score, evidenceType: audit.customer_evidence_type };
+    case "intelligence":
+      return { score: audit.intelligence_score, evidenceType: audit.intelligence_evidence_type };
+  }
+}
+
+function proposalStatusStyle(status: ProposalStatus) {
+  if (status === "won") return { bg: "#EAF76A", color: "#141414" };
+  if (status === "lost") return { bg: "#F4F3EF", color: "#8A8A86" };
+  if (status === "sent") return { bg: "#FFFBEB", color: "#D97706" };
+  if (status === "approved") return { bg: "#141414", color: "#fff" };
+  return { bg: "#F4F3EF", color: "#141414" };
+}
 
 type FormState = {
   company: string;
@@ -53,12 +92,24 @@ function LeadDetailContent({ leadId, onClose }: { leadId: string; onClose: () =>
   const router = useRouter();
   const [lead, setLead] = useState<Lead | null>(null);
   const [activity, setActivity] = useState<LeadActivity[]>([]);
+  const [latestAudit, setLatestAudit] = useState<Audit | null>(null);
+  const [proposals, setProposals] = useState<Proposal[]>([]);
+  const [openProposalId, setOpenProposalId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [form, setForm] = useState<FormState | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  function refetchAuditsAndProposals() {
+    fetch(`/api/leads/${leadId}/audits`)
+      .then((res) => res.json())
+      .then((body) => setLatestAudit(body.audits?.[0] ?? null));
+    fetch(`/api/leads/${leadId}/proposals`)
+      .then((res) => res.json())
+      .then((body) => setProposals(body.proposals ?? []));
+  }
 
   useEffect(() => {
     fetch(`/api/leads/${leadId}`)
@@ -69,6 +120,8 @@ function LeadDetailContent({ leadId, onClose }: { leadId: string; onClose: () =>
         setForm(toFormState(body.lead));
       })
       .finally(() => setLoading(false));
+    refetchAuditsAndProposals();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [leadId]);
 
   function set<K extends keyof FormState>(key: K, value: FormState[K]) {
@@ -184,6 +237,99 @@ function LeadDetailContent({ leadId, onClose }: { leadId: string; onClose: () =>
                 <div className="mt-3">
                   <div className="text-[11px] font-semibold uppercase tracking-wide text-ink/40">Discovery notes</div>
                   <div className="mt-0.5 text-sm leading-relaxed text-ink/80">{lead.discovery_notes || "—"}</div>
+                </div>
+
+                <div className="mt-6 border-t border-divider pt-4">
+                  <div className="flex items-center justify-between">
+                    <div className="text-sm font-bold text-ink">Growth Gap Audit</div>
+                    <AuditModal
+                      leadId={leadId}
+                      onCreated={refetchAuditsAndProposals}
+                      trigger={
+                        <span className="cursor-pointer rounded-full bg-panel px-3 py-1.5 text-[11px] font-semibold text-ink hover:bg-[#EFEFE9]">
+                          {latestAudit ? "Re-run Audit" : "Run Audit"}
+                        </span>
+                      }
+                    />
+                  </div>
+                  {!latestAudit ? (
+                    <div className="mt-2 text-xs text-ink/40">No audit yet.</div>
+                  ) : (
+                    <div className="mt-3 grid grid-cols-5 gap-2">
+                      {PILLARS.map((key) => {
+                        const { score, evidenceType } = pillarData(latestAudit, key);
+                        const isPrimary = latestAudit.primary_bottleneck === key;
+                        return (
+                          <div
+                            key={key}
+                            className="rounded-lg p-2 text-center"
+                            style={{ background: isPrimary ? "#141414" : "#F4F3EF" }}
+                          >
+                            <div
+                              className="text-[10px] font-semibold uppercase"
+                              style={{ color: isPrimary ? "rgba(255,255,255,0.6)" : "rgba(20,20,20,0.5)" }}
+                            >
+                              {PILLAR_LABELS[key]}
+                            </div>
+                            <div
+                              className="mt-1 text-lg font-bold"
+                              style={{ color: isPrimary ? "#fff" : "#141414" }}
+                            >
+                              {score ?? "—"}
+                            </div>
+                            {evidenceType && (
+                              <div
+                                className="mt-0.5 text-[9px]"
+                                style={{ color: isPrimary ? "rgba(255,255,255,0.5)" : "rgba(20,20,20,0.4)" }}
+                              >
+                                {EVIDENCE_LABELS[evidenceType]}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                  {latestAudit?.business_impact && (
+                    <div className="mt-2 text-xs leading-relaxed text-ink/60">{latestAudit.business_impact}</div>
+                  )}
+                </div>
+
+                <div className="mt-6 border-t border-divider pt-4">
+                  <div className="flex items-center justify-between">
+                    <div className="text-sm font-bold text-ink">Proposals</div>
+                    <NewProposalModal
+                      leadId={leadId}
+                      trigger={
+                        <span className="cursor-pointer rounded-full bg-panel px-3 py-1.5 text-[11px] font-semibold text-ink hover:bg-[#EFEFE9]">
+                          + New Proposal
+                        </span>
+                      }
+                    />
+                  </div>
+                  {proposals.length === 0 ? (
+                    <div className="mt-2 text-xs text-ink/40">No proposals yet.</div>
+                  ) : (
+                    <div className="mt-2.5 flex flex-col gap-2">
+                      {proposals.map((p) => (
+                        <div
+                          key={p.id}
+                          onClick={() => setOpenProposalId(p.id)}
+                          className="flex cursor-pointer items-center justify-between rounded-lg bg-panel px-3 py-2 hover:bg-[#EFEFE9]"
+                        >
+                          <div className="truncate text-xs font-semibold text-ink">
+                            {p.recommended_os.map((k) => OPERATING_SYSTEMS[k as OperatingSystemKey]?.name ?? k).join(", ") || "Proposal"}
+                          </div>
+                          <span
+                            className="flex-none rounded-full px-2 py-0.5 text-[10px] font-semibold"
+                            style={proposalStatusStyle(p.status)}
+                          >
+                            {PROPOSAL_STATUS_LABELS[p.status]}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <div className="mt-5 flex gap-2">
@@ -339,6 +485,7 @@ function LeadDetailContent({ leadId, onClose }: { leadId: string; onClose: () =>
           </>
         )}
       </div>
+      <ProposalDetailModal proposalId={openProposalId} onClose={() => setOpenProposalId(null)} />
     </div>
   );
 }
