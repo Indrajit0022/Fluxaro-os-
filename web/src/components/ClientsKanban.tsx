@@ -2,13 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { PIPELINE_STAGES, STAGE_LABELS, type Lead, type PipelineStage } from "@/lib/types";
+import { STAGE_LABELS, type Lead, type PipelineStage } from "@/lib/types";
 import { formatCurrencyFull } from "@/lib/format";
+import { LeadDetailModal } from "./LeadDetailModal";
 
-const BUCKETS: { title: string; stages: PipelineStage[] }[] = [
-  { title: "In Touch", stages: ["new", "qualified", "discovery"] },
-  { title: "Offer Sent", stages: ["audit", "proposal_sent", "negotiation"] },
-  { title: "Discussion", stages: ["won", "lost"] },
+const BUCKETS: { title: string; stages: PipelineStage[]; dropStage: PipelineStage }[] = [
+  { title: "In Touch", stages: ["new", "qualified", "discovery"], dropStage: "new" },
+  { title: "Offer Sent", stages: ["audit", "proposal_sent", "negotiation"], dropStage: "audit" },
+  { title: "Discussion", stages: ["won", "lost"], dropStage: "won" },
 ];
 
 function tagStyle(stage: PipelineStage) {
@@ -24,43 +25,35 @@ function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
-function LeadCard({ lead }: { lead: Lead }) {
-  const router = useRouter();
-  const [updating, setUpdating] = useState(false);
+function LeadCard({
+  lead,
+  onOpen,
+  onDragStart,
+  dragging,
+}: {
+  lead: Lead;
+  onOpen: () => void;
+  onDragStart: (e: React.DragEvent) => void;
+  dragging: boolean;
+}) {
   const tag = tagStyle(lead.stage);
   const dark = lead.stage === "negotiation";
 
-  async function changeStage(stage: PipelineStage) {
-    setUpdating(true);
-    try {
-      await fetch(`/api/leads/${lead.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ stage }),
-      });
-      router.refresh();
-    } finally {
-      setUpdating(false);
-    }
-  }
-
   return (
     <div
-      className="rounded-[18px] p-4"
-      style={{ background: dark ? "#141414" : "#fff" }}
+      draggable
+      onDragStart={onDragStart}
+      onClick={onOpen}
+      className="cursor-pointer rounded-[18px] p-4"
+      style={{ background: dark ? "#141414" : "#fff", opacity: dragging ? 0.4 : 1 }}
     >
-      <div className="flex items-start justify-between gap-2">
-        <span
-          className="inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold"
-          style={{ background: tag.bg, color: tag.color }}
-        >
-          {STAGE_LABELS[lead.stage]}
-        </span>
-      </div>
-      <div
-        className="mt-3 text-sm font-bold"
-        style={{ color: dark ? "#fff" : "#141414" }}
+      <span
+        className="inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold"
+        style={{ background: tag.bg, color: tag.color }}
       >
+        {STAGE_LABELS[lead.stage]}
+      </span>
+      <div className="mt-3 text-sm font-bold" style={{ color: dark ? "#fff" : "#141414" }}>
         {lead.company}
       </div>
       <div
@@ -85,66 +78,90 @@ function LeadCard({ lead }: { lead: Lead }) {
           </svg>
           {formatDate(lead.updated_at)}
         </div>
-        <div
-          className="text-[11px] font-semibold"
-          style={{ color: dark ? "#fff" : "#141414" }}
-        >
+        <div className="text-[11px] font-semibold" style={{ color: dark ? "#fff" : "#141414" }}>
           {lead.deal_value ? formatCurrencyFull(lead.deal_value) : "—"}
         </div>
       </div>
-      <select
-        value={lead.stage}
-        disabled={updating}
-        onChange={(e) => changeStage(e.target.value as PipelineStage)}
-        className="mt-3 w-full rounded-lg border px-2 py-1.5 text-[11px] font-medium outline-none"
-        style={{
-          borderColor: dark ? "rgba(255,255,255,0.2)" : "rgba(20,20,20,0.12)",
-          background: dark ? "rgba(255,255,255,0.08)" : "#F4F3EF",
-          color: dark ? "#fff" : "#141414",
-        }}
-      >
-        {PIPELINE_STAGES.map((s) => (
-          <option key={s} value={s}>
-            Move to {STAGE_LABELS[s]}
-          </option>
-        ))}
-      </select>
     </div>
   );
 }
 
 export function ClientsKanban({ leads }: { leads: Lead[] }) {
+  const router = useRouter();
+  const [draggingId, setDraggingId] = useState<string | null>(null);
+  const [dragOverBucket, setDragOverBucket] = useState<string | null>(null);
+  const [openLeadId, setOpenLeadId] = useState<string | null>(null);
+
   const newestLead = [...leads].sort(
     (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
   )[0];
 
+  async function handleDrop(bucket: (typeof BUCKETS)[number]) {
+    setDragOverBucket(null);
+    const id = draggingId;
+    setDraggingId(null);
+    if (!id) return;
+    const lead = leads.find((l) => l.id === id);
+    if (!lead || bucket.stages.includes(lead.stage)) return;
+    await fetch(`/api/leads/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ stage: bucket.dropStage }),
+    });
+    router.refresh();
+  }
+
   return (
-    <div className="mt-4 grid grid-cols-[240px_repeat(3,minmax(0,1fr))] items-start gap-4">
-      <div className="flex min-h-[230px] flex-col justify-between rounded-[20px] bg-ink p-[22px]">
-        <div>
-          <div className="text-[17px] font-bold leading-snug text-white">
-            {newestLead ? `${newestLead.company} just came in.` : "No leads yet."}
-          </div>
-          <div className="mt-2.5 text-xs leading-relaxed text-white/60">
-            {newestLead ? "Review it before it goes cold." : "Add your first lead to get started."}
+    <>
+      <div className="mt-4 grid grid-cols-[240px_repeat(3,minmax(0,1fr))] items-start gap-4">
+        <div className="flex min-h-[230px] flex-col justify-between rounded-[20px] bg-ink p-[22px]">
+          <div>
+            <div className="text-[17px] font-bold leading-snug text-white">
+              {newestLead ? `${newestLead.company} just came in.` : "No leads yet."}
+            </div>
+            <div className="mt-2.5 text-xs leading-relaxed text-white/60">
+              {newestLead ? "Review it before it goes cold." : "Add your first lead to get started."}
+            </div>
           </div>
         </div>
+
+        {BUCKETS.map((bucket) => {
+          const cards = leads.filter((l) => bucket.stages.includes(l.stage));
+          const isOver = dragOverBucket === bucket.title;
+          return (
+            <div
+              key={bucket.title}
+              onDragOver={(e) => {
+                e.preventDefault();
+                setDragOverBucket(bucket.title);
+              }}
+              onDragLeave={() => setDragOverBucket((b) => (b === bucket.title ? null : b))}
+              onDrop={(e) => {
+                e.preventDefault();
+                handleDrop(bucket);
+              }}
+              className="flex min-w-0 flex-col gap-3 rounded-[18px] p-1.5 transition-colors"
+              style={{ background: isOver ? "rgba(20,20,20,0.06)" : "transparent" }}
+            >
+              <div className="flex items-baseline gap-1.5 px-1">
+                <div className="text-[15px] font-bold text-ink">{bucket.title}</div>
+                <div className="text-xs text-ink/45">/{cards.length}</div>
+              </div>
+              {cards.map((lead) => (
+                <LeadCard
+                  key={lead.id}
+                  lead={lead}
+                  dragging={draggingId === lead.id}
+                  onOpen={() => setOpenLeadId(lead.id)}
+                  onDragStart={() => setDraggingId(lead.id)}
+                />
+              ))}
+            </div>
+          );
+        })}
       </div>
 
-      {BUCKETS.map((bucket) => {
-        const cards = leads.filter((l) => bucket.stages.includes(l.stage));
-        return (
-          <div key={bucket.title} className="flex min-w-0 flex-col gap-3">
-            <div className="flex items-baseline gap-1.5">
-              <div className="text-[15px] font-bold text-ink">{bucket.title}</div>
-              <div className="text-xs text-ink/45">/{cards.length}</div>
-            </div>
-            {cards.map((lead) => (
-              <LeadCard key={lead.id} lead={lead} />
-            ))}
-          </div>
-        );
-      })}
-    </div>
+      <LeadDetailModal leadId={openLeadId} onClose={() => setOpenLeadId(null)} />
+    </>
   );
 }

@@ -48,3 +48,13 @@ export type NewLeadInput = {
   next_action?: string;
   deal_value?: number;
 };
+
+export type ActivityType = "created" | "stage_change" | "updated" | "note";
+
+export type LeadActivity = {
+  id: string;
+  lead_id: string;
+  type: ActivityType;
+  detail: string;
+  created_at: string;
+};

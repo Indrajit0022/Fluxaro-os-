@@ -1,6 +1,26 @@
 import { NextResponse } from "next/server";
-import { deleteLead, updateLead } from "@/lib/leads";
+import { deleteLead, getLead, listActivity, updateLead } from "@/lib/leads";
 import type { NewLeadInput, PipelineStage } from "@/lib/types";
+
+export async function GET(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    const lead = await getLead(id);
+    if (!lead) {
+      return NextResponse.json({ error: "Lead not found" }, { status: 404 });
+    }
+    const activity = await listActivity(id);
+    return NextResponse.json({ lead, activity });
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Unknown error" },
+      { status: 500 }
+    );
+  }
+}
 
 export async function PATCH(
   request: Request,
