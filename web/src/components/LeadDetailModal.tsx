@@ -42,17 +42,17 @@ function pillarData(audit: Audit, pillar: (typeof PILLARS)[number]) {
 }
 
 function proposalStatusStyle(status: ProposalStatus) {
-  if (status === "won") return { bg: "#EAF76A", color: "#141414" };
-  if (status === "lost") return { bg: "#F4F3EF", color: "#8A8A86" };
-  if (status === "sent") return { bg: "#FFFBEB", color: "#D97706" };
-  if (status === "approved") return { bg: "#141414", color: "#fff" };
-  return { bg: "#F4F3EF", color: "#141414" };
+  if (status === "won") return { background: "#EAF76A", color: "#141414" };
+  if (status === "lost") return { background: "#F4F3EF", color: "#8A8A86" };
+  if (status === "sent") return { background: "#FFFBEB", color: "#D97706" };
+  if (status === "approved") return { background: "#141414", color: "#fff" };
+  return { background: "#F4F3EF", color: "#141414" };
 }
 
 function paymentStatusStyle(status: PaymentStatus) {
-  if (status === "received") return { bg: "#EAF76A", color: "#141414" };
-  if (status === "overdue") return { bg: "#FEE2E2", color: "#DC2626" };
-  return { bg: "#FFFBEB", color: "#D97706" };
+  if (status === "received") return { background: "#EAF76A", color: "#141414" };
+  if (status === "overdue") return { background: "#FEE2E2", color: "#DC2626" };
+  return { background: "#FFFBEB", color: "#D97706" };
 }
 
 type FormState = {

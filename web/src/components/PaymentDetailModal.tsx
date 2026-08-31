@@ -6,9 +6,9 @@ import { PAYMENT_STATUS_LABELS, type Lead, type Payment, type PaymentStatus } fr
 import { formatCurrencyFull } from "@/lib/format";
 
 function statusStyle(status: PaymentStatus) {
-  if (status === "received") return { bg: "#EAF76A", color: "#141414" };
-  if (status === "overdue") return { bg: "#FEE2E2", color: "#DC2626" };
-  return { bg: "#FFFBEB", color: "#D97706" };
+  if (status === "received") return { background: "#EAF76A", color: "#141414" };
+  if (status === "overdue") return { background: "#FEE2E2", color: "#DC2626" };
+  return { background: "#FFFBEB", color: "#D97706" };
 }
 
 export function PaymentDetailModal({ paymentId, onClose }: { paymentId: string | null; onClose: () => void }) {
