@@ -8,11 +8,10 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const lead = await getLead(id);
+    const [lead, activity] = await Promise.all([getLead(id), listActivity(id)]);
     if (!lead) {
       return NextResponse.json({ error: "Lead not found" }, { status: 404 });
     }
-    const activity = await listActivity(id);
     return NextResponse.json({ lead, activity });
   } catch (err) {
     return NextResponse.json(

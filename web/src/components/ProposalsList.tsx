@@ -1,11 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import type { Proposal, ProposalStatus } from "@/lib/types";
 import { PROPOSAL_STATUS_LABELS } from "@/lib/types";
 import { OPERATING_SYSTEMS, type OperatingSystemKey } from "@/lib/operating-systems";
 import { formatCurrencyFull } from "@/lib/format";
-import { ProposalDetailModal } from "./ProposalDetailModal";
+
+const ProposalDetailModal = dynamic(
+  () => import("./ProposalDetailModal").then((m) => m.ProposalDetailModal),
+  { ssr: false }
+);
 
 function statusStyle(status: ProposalStatus) {
   if (status === "won") return { background: "#EAF76A", color: "#141414" };

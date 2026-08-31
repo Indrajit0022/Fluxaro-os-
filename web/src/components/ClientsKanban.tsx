@@ -1,10 +1,18 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import { STAGE_LABELS, type Lead, type PipelineStage } from "@/lib/types";
 import { formatCurrencyFull } from "@/lib/format";
-import { LeadDetailModal } from "./LeadDetailModal";
+
+// Lazy-loaded: the detail modal (plus everything it embeds — audits,
+// proposals, payments) is only needed once a card is clicked, so it
+// shouldn't be part of the initial /clients bundle.
+const LeadDetailModal = dynamic(
+  () => import("./LeadDetailModal").then((m) => m.LeadDetailModal),
+  { ssr: false }
+);
 
 const BUCKETS: { title: string; stages: PipelineStage[]; dropStage: PipelineStage }[] = [
   { title: "In Touch", stages: ["new", "qualified", "discovery"], dropStage: "new" },

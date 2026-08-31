@@ -1,8 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import { Icon } from "./Icon";
-import { DocumentDetailModal } from "./DocumentDetailModal";
+
+const DocumentDetailModal = dynamic(
+  () => import("./DocumentDetailModal").then((m) => m.DocumentDetailModal),
+  { ssr: false }
+);
 import {
   KNOWLEDGE_CATEGORIES,
   KNOWLEDGE_CATEGORY_LABELS,

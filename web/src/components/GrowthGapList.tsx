@@ -1,9 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { EVIDENCE_LABELS, type Audit } from "@/lib/types";
 import { PILLARS, PILLAR_LABELS } from "@/lib/operating-systems";
-import { AuditDetailModal } from "./AuditDetailModal";
+
+const AuditDetailModal = dynamic(
+  () => import("./AuditDetailModal").then((m) => m.AuditDetailModal),
+  { ssr: false }
+);
 
 function pillarData(audit: Audit, pillar: (typeof PILLARS)[number]) {
   switch (pillar) {

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import {
   PIPELINE_STAGES,
   STAGE_LABELS,
@@ -22,9 +23,18 @@ import { formatCurrencyFull } from "@/lib/format";
 import { PILLARS, PILLAR_LABELS, OPERATING_SYSTEMS, type OperatingSystemKey } from "@/lib/operating-systems";
 import { AuditModal } from "./AuditModal";
 import { NewProposalModal } from "./NewProposalModal";
-import { ProposalDetailModal } from "./ProposalDetailModal";
 import { NewPaymentModal } from "./NewPaymentModal";
-import { PaymentDetailModal } from "./PaymentDetailModal";
+
+// Same lazy-loaded components used by /proposals and /cashflow — sharing
+// the import path means the bundler serves one shared chunk either way.
+const ProposalDetailModal = dynamic(
+  () => import("./ProposalDetailModal").then((m) => m.ProposalDetailModal),
+  { ssr: false }
+);
+const PaymentDetailModal = dynamic(
+  () => import("./PaymentDetailModal").then((m) => m.PaymentDetailModal),
+  { ssr: false }
+);
 
 function pillarData(audit: Audit, pillar: (typeof PILLARS)[number]) {
   switch (pillar) {

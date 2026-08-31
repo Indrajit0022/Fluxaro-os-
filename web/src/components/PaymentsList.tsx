@@ -1,9 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { PAYMENT_STATUS_LABELS, type Payment, type PaymentStatus } from "@/lib/types";
 import { formatCurrencyFull, initialOf } from "@/lib/format";
-import { PaymentDetailModal } from "./PaymentDetailModal";
+
+const PaymentDetailModal = dynamic(
+  () => import("./PaymentDetailModal").then((m) => m.PaymentDetailModal),
+  { ssr: false }
+);
 
 function statusStyle(status: PaymentStatus) {
   if (status === "received") return { background: "#EAF76A", color: "#141414" };
