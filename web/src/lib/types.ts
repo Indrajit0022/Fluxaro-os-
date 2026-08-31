@@ -190,3 +190,28 @@ export type NewPaymentInput = {
   expected_date?: string;
   notes?: string;
 };
+
+export const KNOWLEDGE_CATEGORIES = ["sop", "template", "reference", "client-notes"] as const;
+export type KnowledgeCategory = (typeof KNOWLEDGE_CATEGORIES)[number];
+
+export const KNOWLEDGE_CATEGORY_LABELS: Record<KnowledgeCategory, string> = {
+  sop: "SOP",
+  template: "Template",
+  reference: "Reference",
+  "client-notes": "Client Notes",
+};
+
+export type KnowledgeDocument = {
+  id: string;
+  title: string;
+  category: KnowledgeCategory;
+  content: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type NewKnowledgeDocumentInput = {
+  title: string;
+  category: KnowledgeCategory;
+  content: string;
+};
