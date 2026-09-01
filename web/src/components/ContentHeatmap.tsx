@@ -47,7 +47,12 @@ export function ContentHeatmap({
   }, [columns]);
 
   return (
-    <div className="relative">
+    // ParentSize's own wrapper is height:100%, which resolves to 0 against
+    // an auto-height ancestor — its measurement div then clips the SVG to
+    // nothing (overflow:hidden), even though the SVG itself renders with a
+    // real, explicit height. A fixed pixel height here is what the
+    // percentage actually resolves against.
+    <div className="relative" style={{ height: 170 }}>
       <ParentSize>
         {({ width }) => {
           if (width <= 0) return null;
