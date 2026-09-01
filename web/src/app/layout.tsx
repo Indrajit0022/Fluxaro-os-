@@ -12,7 +12,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Fluxaro OS",
   description: "Fluxaro's internal command center",
-  icons: { icon: "/logo.png" },
+  icons: { icon: "/favicon.png" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

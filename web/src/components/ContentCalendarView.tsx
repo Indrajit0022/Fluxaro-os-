@@ -15,6 +15,14 @@ const ContentHeatmap = dynamic(() => import("./ContentHeatmap").then((m) => m.Co
   loading: () => <div className="h-[140px] animate-pulse rounded-xl bg-panel" />,
 });
 
+const PostStatusPieChart = dynamic(
+  () => import("./PostStatusPieChart").then((m) => m.PostStatusPieChart),
+  {
+    ssr: false,
+    loading: () => <div className="h-full w-[220px] flex-none animate-pulse rounded-[20px] bg-white" />,
+  }
+);
+
 export function ContentCalendarView({
   posts,
   accountLabelById,
@@ -33,8 +41,11 @@ export function ContentCalendarView({
 
   return (
     <>
-      <div className="rounded-[20px] bg-white p-5">
-        <ContentHeatmap dates={dates} onSelectDate={setSelectedDate} />
+      <div className="flex items-stretch gap-4">
+        <div className="min-w-0 flex-1 rounded-[20px] bg-white p-5">
+          <ContentHeatmap dates={dates} onSelectDate={setSelectedDate} />
+        </div>
+        <PostStatusPieChart posts={posts} />
       </div>
 
       <div className="mt-4 flex items-center justify-between">
