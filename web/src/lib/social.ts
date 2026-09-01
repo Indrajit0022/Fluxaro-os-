@@ -110,3 +110,8 @@ export async function deleteSocialPost(id: string): Promise<void> {
   const { error } = await supabaseServer.from("social_posts").delete().eq("id", id);
   if (error) throw new Error(error.message);
 }
+
+export async function deleteSocialPostsBulk(ids: string[]): Promise<void> {
+  const { error } = await supabaseServer.from("social_posts").delete().in("id", ids);
+  if (error) throw new Error(error.message);
+}

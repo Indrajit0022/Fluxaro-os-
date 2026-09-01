@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createSocialPostsBulk } from "@/lib/social";
+import { createSocialPostsBulk, deleteSocialPostsBulk } from "@/lib/social";
 import type { NewSocialPostInput } from "@/lib/types";
 
 export async function POST(request: Request) {
@@ -14,6 +14,22 @@ export async function POST(request: Request) {
     }
     const posts = await createSocialPostsBulk(body.posts);
     return NextResponse.json({ posts });
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Unknown error" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const body = (await request.json()) as { ids: string[] };
+    if (!body.ids?.length) {
+      return NextResponse.json({ error: "ids array is required" }, { status: 400 });
+    }
+    await deleteSocialPostsBulk(body.ids);
+    return NextResponse.json({ ok: true });
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Unknown error" },
