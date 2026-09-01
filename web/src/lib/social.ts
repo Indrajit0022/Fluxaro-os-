@@ -78,6 +78,20 @@ export async function createSocialPost(input: NewSocialPostInput): Promise<Socia
   return data as SocialPost;
 }
 
+export async function createSocialPostsBulk(inputs: NewSocialPostInput[]): Promise<SocialPost[]> {
+  const rows = inputs.map((input) => ({
+    account_id: input.account_id ?? null,
+    title: input.title,
+    content: input.content ?? null,
+    pillar: input.pillar ?? null,
+    status: input.status ?? "idea",
+    scheduled_date: input.scheduled_date ?? null,
+  }));
+  const { data, error } = await supabaseServer.from("social_posts").insert(rows).select("*");
+  if (error) throw new Error(error.message);
+  return data as SocialPost[];
+}
+
 export async function updateSocialPost(
   id: string,
   patch: Partial<NewSocialPostInput>
