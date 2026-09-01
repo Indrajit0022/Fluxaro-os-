@@ -61,10 +61,12 @@ export function Sidebar() {
             )}
             <div className="flex flex-col gap-1">
               {group.items.map((item) => {
-                const active =
-                  item.href === "/"
-                    ? pathname === "/"
-                    : pathname === item.href || pathname.startsWith(`${item.href}/`);
+                // Every nav item is a flat, standalone destination — none of
+                // them own sub-pages that should also highlight them — so
+                // exact match is correct. (A prefix/boundary match briefly
+                // lived here, but /social/calendar being a literal sub-path
+                // of /social made "Social Media" light up too.)
+                const active = pathname === item.href;
                 return (
                   <Link
                     key={item.key}
