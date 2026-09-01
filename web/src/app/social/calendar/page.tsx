@@ -11,6 +11,7 @@ export default async function ContentCalendarPage() {
   const accountLabelById = Object.fromEntries(
     accounts.map((a) => [a.id, `${a.platform} · ${a.handle}`])
   );
+  const accountPlatformById = Object.fromEntries(accounts.map((a) => [a.id, a.platform]));
 
   return (
     <>
@@ -38,7 +39,11 @@ export default async function ContentCalendarPage() {
       </div>
 
       <div className="mt-5">
-        <ContentCalendarView posts={posts} accountLabelById={accountLabelById} />
+        <ContentCalendarView
+          posts={posts}
+          accountLabelById={accountLabelById}
+          accountPlatformById={accountPlatformById}
+        />
       </div>
     </>
   );

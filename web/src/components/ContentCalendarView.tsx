@@ -15,8 +15,8 @@ const ContentHeatmap = dynamic(() => import("./ContentHeatmap").then((m) => m.Co
   loading: () => <div className="h-[140px] animate-pulse rounded-xl bg-panel" />,
 });
 
-const PostStatusPieChart = dynamic(
-  () => import("./PostStatusPieChart").then((m) => m.PostStatusPieChart),
+const PostPlatformPieChart = dynamic(
+  () => import("./PostPlatformPieChart").then((m) => m.PostPlatformPieChart),
   {
     ssr: false,
     loading: () => <div className="h-full w-[220px] flex-none animate-pulse rounded-[20px] bg-white" />,
@@ -26,9 +26,11 @@ const PostStatusPieChart = dynamic(
 export function ContentCalendarView({
   posts,
   accountLabelById,
+  accountPlatformById,
 }: {
   posts: SocialPost[];
   accountLabelById: Record<string, string>;
+  accountPlatformById: Record<string, string>;
 }) {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
@@ -45,7 +47,7 @@ export function ContentCalendarView({
         <div className="min-w-0 flex-1 rounded-[20px] bg-white p-5">
           <ContentHeatmap dates={dates} onSelectDate={setSelectedDate} />
         </div>
-        <PostStatusPieChart posts={posts} />
+        <PostPlatformPieChart posts={posts} accountPlatformById={accountPlatformById} />
       </div>
 
       <div className="mt-4 flex items-center justify-between">
