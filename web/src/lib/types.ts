@@ -215,3 +215,34 @@ export type NewKnowledgeDocumentInput = {
   category: KnowledgeCategory;
   content: string;
 };
+
+export type TeamMember = {
+  id: string;
+  name: string;
+  role: string;
+  created_at: string;
+};
+
+export type NewTeamMemberInput = {
+  name: string;
+  role: string;
+};
+
+export type Integration = {
+  id: string;
+  name: string;
+  connected: boolean;
+  updated_at: string;
+};
+
+export type WorkspaceSettings = {
+  id: true;
+  email_alerts: boolean;
+  slack_alerts: boolean;
+  weekly_digest: boolean;
+  updated_at: string;
+};
+
+export type WorkspaceSettingsPatch = Partial<
+  Pick<WorkspaceSettings, "email_alerts" | "slack_alerts" | "weekly_digest">
+>;
