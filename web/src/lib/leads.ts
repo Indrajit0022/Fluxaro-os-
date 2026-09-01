@@ -12,6 +12,16 @@ export async function listLeads(): Promise<Lead[]> {
   return data as Lead[];
 }
 
+export async function listLeadsWithFollowUp(): Promise<Lead[]> {
+  const { data, error } = await supabaseServer
+    .from("leads")
+    .select("*")
+    .not("follow_up_date", "is", null)
+    .order("follow_up_date", { ascending: true });
+  if (error) throw new Error(error.message);
+  return data as Lead[];
+}
+
 export async function getLead(id: string): Promise<Lead | null> {
   const { data, error } = await supabaseServer
     .from("leads")
@@ -56,6 +66,7 @@ export async function createLead(input: NewLeadInput): Promise<Lead> {
       growth_gap_score: input.growth_gap_score ?? null,
       next_action: input.next_action ?? null,
       deal_value: input.deal_value ?? null,
+      follow_up_date: input.follow_up_date ?? null,
     })
     .select("*")
     .single();
@@ -75,6 +86,7 @@ const EDITABLE_FIELD_LABELS: Record<keyof NewLeadInput, string> = {
   growth_gap_score: "Growth Gap score",
   next_action: "Next action",
   deal_value: "Deal value",
+  follow_up_date: "Follow-up date",
 };
 
 export async function updateLead(

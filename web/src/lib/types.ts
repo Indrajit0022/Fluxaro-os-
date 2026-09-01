@@ -33,6 +33,7 @@ export type Lead = {
   growth_gap_score: number | null;
   next_action: string | null;
   deal_value: number | null;
+  follow_up_date: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -47,6 +48,7 @@ export type NewLeadInput = {
   growth_gap_score?: number;
   next_action?: string;
   deal_value?: number;
+  follow_up_date?: string | null;
 };
 
 export type ActivityType = "created" | "stage_change" | "updated" | "note";
@@ -246,3 +248,116 @@ export type WorkspaceSettings = {
 export type WorkspaceSettingsPatch = Partial<
   Pick<WorkspaceSettings, "email_alerts" | "slack_alerts" | "weekly_digest">
 >;
+
+export type SocialAccount = {
+  id: string;
+  platform: string;
+  handle: string;
+  url: string | null;
+  active: boolean;
+  created_at: string;
+};
+
+export type NewSocialAccountInput = {
+  platform: string;
+  handle: string;
+  url?: string;
+};
+
+export const CONTENT_STATUSES = ["idea", "drafted", "scheduled", "posted"] as const;
+export type ContentStatus = (typeof CONTENT_STATUSES)[number];
+
+export const CONTENT_STATUS_LABELS: Record<ContentStatus, string> = {
+  idea: "Idea",
+  drafted: "Drafted",
+  scheduled: "Scheduled",
+  posted: "Posted",
+};
+
+export const CONTENT_PILLARS = [
+  "business-thinking",
+  "systems",
+  "proof",
+  "behind-the-scenes",
+  "offers",
+] as const;
+export type ContentPillar = (typeof CONTENT_PILLARS)[number];
+
+export const CONTENT_PILLAR_LABELS: Record<ContentPillar, string> = {
+  "business-thinking": "Business Thinking",
+  systems: "Systems",
+  proof: "Proof / Transformations",
+  "behind-the-scenes": "Behind the Scenes",
+  offers: "Offers",
+};
+
+export type SocialPost = {
+  id: string;
+  account_id: string | null;
+  title: string;
+  content: string | null;
+  pillar: ContentPillar | null;
+  status: ContentStatus;
+  scheduled_date: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type NewSocialPostInput = {
+  account_id?: string | null;
+  title: string;
+  content?: string;
+  pillar?: ContentPillar;
+  status?: ContentStatus;
+  scheduled_date?: string;
+};
+
+export const MEMBERS = ["indrajit", "aditya"] as const;
+export type Member = (typeof MEMBERS)[number];
+
+export const MEMBER_LABELS: Record<Member, string> = {
+  indrajit: "Indrajit",
+  aditya: "Aditya",
+};
+
+export type DailyChecklistItem = {
+  id: string;
+  label: string;
+  created_at: string;
+};
+
+export type DailyChecklistEntry = {
+  id: string;
+  item_id: string;
+  member: Member;
+  date: string;
+  checked: boolean;
+  updated_at: string;
+};
+
+export type DailyTask = {
+  id: string;
+  member: Member;
+  date: string;
+  text: string;
+  done: boolean;
+  created_at: string;
+};
+
+export type NewDailyTaskInput = {
+  member: Member;
+  date: string;
+  text: string;
+};
+
+export type StickyNote = {
+  id: string;
+  author: Member;
+  text: string;
+  created_at: string;
+};
+
+export type NewStickyNoteInput = {
+  author: Member;
+  text: string;
+};

@@ -1,19 +1,15 @@
 import { NextResponse } from "next/server";
-import { deleteAudit, getAudit } from "@/lib/audits";
-import { getLead } from "@/lib/leads";
+import { deleteDailyTask, setDailyTaskDone } from "@/lib/tasks";
 
-export async function GET(
-  _request: Request,
+export async function PATCH(
+  request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
-    const audit = await getAudit(id);
-    if (!audit) {
-      return NextResponse.json({ error: "Audit not found" }, { status: 404 });
-    }
-    const lead = await getLead(audit.lead_id);
-    return NextResponse.json({ audit, lead });
+    const body = (await request.json()) as { done: boolean };
+    const task = await setDailyTaskDone(id, body.done);
+    return NextResponse.json({ task });
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Unknown error" },
@@ -28,7 +24,7 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    await deleteAudit(id);
+    await deleteDailyTask(id);
     return NextResponse.json({ ok: true });
   } catch (err) {
     return NextResponse.json(

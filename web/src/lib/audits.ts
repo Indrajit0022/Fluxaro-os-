@@ -68,3 +68,8 @@ export async function createAudit(input: NewAuditInput): Promise<Audit> {
 
   return audit;
 }
+
+export async function deleteAudit(id: string): Promise<void> {
+  const { error } = await supabaseServer.from("audits").delete().eq("id", id);
+  if (error) throw new Error(error.message);
+}

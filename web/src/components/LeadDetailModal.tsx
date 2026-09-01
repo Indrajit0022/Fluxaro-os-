@@ -19,7 +19,7 @@ import {
   type Proposal,
   type ProposalStatus,
 } from "@/lib/types";
-import { formatCurrencyFull } from "@/lib/format";
+import { formatCurrencyFull, relativeTime } from "@/lib/format";
 import { PILLARS, PILLAR_LABELS, OPERATING_SYSTEMS, type OperatingSystemKey } from "@/lib/operating-systems";
 import { AuditModal } from "./AuditModal";
 import { NewProposalModal } from "./NewProposalModal";
@@ -75,6 +75,7 @@ type FormState = {
   deal_value: string;
   next_action: string;
   discovery_notes: string;
+  follow_up_date: string;
 };
 
 function toFormState(lead: Lead): FormState {
@@ -88,18 +89,8 @@ function toFormState(lead: Lead): FormState {
     deal_value: lead.deal_value != null ? String(lead.deal_value) : "",
     next_action: lead.next_action ?? "",
     discovery_notes: lead.discovery_notes ?? "",
+    follow_up_date: lead.follow_up_date ?? "",
   };
-}
-
-function relativeTime(iso: string): string {
-  const diffMs = Date.now() - new Date(iso).getTime();
-  const mins = Math.round(diffMs / 60000);
-  if (mins < 1) return "just now";
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.round(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  const days = Math.round(hrs / 24);
-  return `${days}d ago`;
 }
 
 export function LeadDetailModal({ leadId, onClose }: { leadId: string | null; onClose: () => void }) {
@@ -169,6 +160,7 @@ function LeadDetailContent({ leadId, onClose }: { leadId: string; onClose: () =>
         deal_value: form.deal_value ? Number(form.deal_value) : undefined,
         next_action: form.next_action.trim() || undefined,
         discovery_notes: form.discovery_notes.trim() || undefined,
+        follow_up_date: form.follow_up_date || null,
       };
       const res = await fetch(`/api/leads/${leadId}`, {
         method: "PATCH",
@@ -259,6 +251,18 @@ function LeadDetailContent({ leadId, onClose }: { leadId: string; onClose: () =>
                 <div className="mt-3">
                   <div className="text-[11px] font-semibold uppercase tracking-wide text-ink/40">Next action</div>
                   <div className="mt-0.5 text-sm text-ink">{lead.next_action || "—"}</div>
+                </div>
+                <div className="mt-3">
+                  <div className="text-[11px] font-semibold uppercase tracking-wide text-ink/40">Follow-up date</div>
+                  <div className="mt-0.5 text-sm text-ink">
+                    {lead.follow_up_date
+                      ? new Date(`${lead.follow_up_date}T00:00:00`).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })
+                      : "—"}
+                  </div>
                 </div>
                 <div className="mt-3">
                   <div className="text-[11px] font-semibold uppercase tracking-wide text-ink/40">Discovery notes</div>
@@ -507,14 +511,25 @@ function LeadDetailContent({ leadId, onClose }: { leadId: string; onClose: () =>
                     />
                   </label>
                 </div>
-                <label className="text-xs font-semibold text-ink/60">
-                  Next action
-                  <input
-                    value={form.next_action}
-                    onChange={(e) => set("next_action", e.target.value)}
-                    className="mt-1 w-full rounded-xl border border-black/10 px-3 py-2 text-sm text-ink outline-none focus:border-ink"
-                  />
-                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  <label className="text-xs font-semibold text-ink/60">
+                    Next action
+                    <input
+                      value={form.next_action}
+                      onChange={(e) => set("next_action", e.target.value)}
+                      className="mt-1 w-full rounded-xl border border-black/10 px-3 py-2 text-sm text-ink outline-none focus:border-ink"
+                    />
+                  </label>
+                  <label className="text-xs font-semibold text-ink/60">
+                    Follow-up date
+                    <input
+                      value={form.follow_up_date}
+                      onChange={(e) => set("follow_up_date", e.target.value)}
+                      type="date"
+                      className="mt-1 w-full rounded-xl border border-black/10 px-3 py-2 text-sm text-ink outline-none focus:border-ink"
+                    />
+                  </label>
+                </div>
                 <label className="text-xs font-semibold text-ink/60">
                   Discovery notes
                   <textarea

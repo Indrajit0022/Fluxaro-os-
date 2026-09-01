@@ -4,6 +4,7 @@ import { listLeads } from "@/lib/leads";
 import { capsules, formatCurrency } from "@/lib/format";
 import { Icon } from "@/components/Icon";
 import { OpenAgentsButton } from "@/components/OpenAgentsButton";
+import { StickyNotesWidget } from "@/components/StickyNotesWidget";
 
 // Reads live lead data on every request — never prerendered at build time.
 export const dynamic = "force-dynamic";
@@ -301,6 +302,8 @@ export default async function CommandCenterPage() {
           ))}
         </div>
       </div>
+
+      <StickyNotesWidget />
     </>
   );
 }

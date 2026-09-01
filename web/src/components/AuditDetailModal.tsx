@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { EVIDENCE_LABELS, type Audit, type Lead } from "@/lib/types";
 import { PILLARS, PILLAR_LABELS } from "@/lib/operating-systems";
 
@@ -33,9 +34,12 @@ export function AuditDetailModal({ auditId, onClose }: { auditId: string | null;
 }
 
 function AuditDetailContent({ auditId, onClose }: { auditId: string; onClose: () => void }) {
+  const router = useRouter();
   const [audit, setAudit] = useState<Audit | null>(null);
   const [lead, setLead] = useState<Lead | null>(null);
   const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   useEffect(() => {
     fetch(`/api/audits/${auditId}`)
@@ -46,6 +50,17 @@ function AuditDetailContent({ auditId, onClose }: { auditId: string; onClose: ()
       })
       .finally(() => setLoading(false));
   }, [auditId]);
+
+  async function handleDelete() {
+    setBusy(true);
+    try {
+      await fetch(`/api/audits/${auditId}`, { method: "DELETE" });
+      router.refresh();
+      onClose();
+    } finally {
+      setBusy(false);
+    }
+  }
 
   return (
     <div className="fixed inset-0 z-30 flex items-center justify-center bg-slate-900/40 p-4" onClick={onClose}>
@@ -139,6 +154,25 @@ function AuditDetailContent({ auditId, onClose }: { auditId: string; onClose: ()
                 <div className="mt-0.5 text-sm leading-relaxed text-ink/80">{audit.notes}</div>
               </div>
             )}
+
+            <div className="mt-5">
+              {confirmingDelete ? (
+                <button
+                  onClick={handleDelete}
+                  disabled={busy}
+                  className="w-full cursor-pointer rounded-full bg-red-600 py-2.5 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-50"
+                >
+                  Confirm delete
+                </button>
+              ) : (
+                <button
+                  onClick={() => setConfirmingDelete(true)}
+                  className="w-full cursor-pointer rounded-full py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50"
+                >
+                  Delete audit
+                </button>
+              )}
+            </div>
           </>
         )}
       </div>
